@@ -1,1 +1,21 @@
 @import "tailwindcss";
+
+/* 
+    https://docs.astro.build/en/guides/fonts/
+    
+    Example implementation of the font
+    h1 {
+        font-family: 'DistantGalaxy', sans-serif;
+    }
+
+    Install font: pnpm add @fontsource/twinkle-star
+*/
+
+@font-face {
+  font-family: "DistantGalaxy";
+  /* TODO: Add your font file to public/fonts/ */
+  src: url("/fonts/DistantGalaxy.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}

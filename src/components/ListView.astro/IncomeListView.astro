@@ -3,11 +3,11 @@
 >
   <div style="padding: 1rem 1.5rem; border-bottom: 1px solid #e5e7eb;">
     <h3 style="font-size: 1.125rem; font-weight: 500;">
-      Transacciones Recientes
+      Transacciones de Ingresos
     </h3>
   </div>
   <div style="border-top: 1px solid #e5e7eb;">
-    <div id="recentTransactions">
+    <div id="transactions">
       <!-- Transactions will be inserted here by JavaScript -->
     </div>
   </div>
@@ -20,8 +20,8 @@
   import { getTransactions } from "src/utils/storage";
 
   // Update recent transactions
-  const updateRecentTransactions = (transactions: Transaction[]) => {
-    const container = document.getElementById("recentTransactions");
+  const updateTransactions = (transactions: Transaction[]) => {
+    const container = document.getElementById("transactions");
     if (!container) return;
 
     if (transactions.length === 0) {
@@ -38,8 +38,8 @@
           <div style="font-weight: 500;">${t.description}</div>
           <div style="font-size: 0.875rem; color: #6b7280;">${categoryConfig[t.category]?.label || t.category} • ${formatDate(t.date)}</div>
         </div>
-        <div style="font-weight: 500; color: ${t.type === "income" ? "#166534" : "#991b1b"};">
-          ${t.type === "income" ? "+" : "-"}${formatCurrency(t.amount)}
+        <div style="font-weight: 500; color: #166534">
+          +${formatCurrency(t.amount)}
         </div>
       </div>
     `
@@ -50,20 +50,25 @@
   // Initialize on load
   document.addEventListener("DOMContentLoaded", () => {
     const transactions = getTransactions();
-    updateRecentTransactions(transactions);
+    const incomeTransactions = transactions.filter((t) => t.type === "income");
+    updateTransactions(incomeTransactions);
   });
 
   // Listen for localStorage changes
   window.addEventListener("storage", (e) => {
     if (e.key === "transactions") {
       const transactions = getTransactions();
-      updateRecentTransactions(transactions);
+      const incomeTransactions = transactions.filter(
+        (t) => t.type === "income"
+      );
+      updateTransactions(incomeTransactions);
     }
   });
 
   // Listen for custom events (for same-tab updates)
   window.addEventListener(EVENT_NAME.TRANSACTIONS_UPDATED, () => {
     const transactions = getTransactions();
-    updateRecentTransactions(transactions);
+    const incomeTransactions = transactions.filter((t) => t.type === "income");
+    updateTransactions(incomeTransactions);
   });
 </script>

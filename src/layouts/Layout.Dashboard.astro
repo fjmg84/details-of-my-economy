@@ -1,0 +1,62 @@
+---
+import FinanceTotals from "@components/FinanceTotals.astro";
+import PrincipalLayout from "./Layout.astro";
+---
+
+<PrincipalLayout>
+  <div class="min-h-screen flex">
+    <header class="bg-white shadow-sm">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+        <div class="flex flex-col justify-between items-center">
+          <a href="/" class="text-2xl font-bold text-indigo-600">Mi Economía</a>
+          <nav class="hidden md:flex space-x-8 flex-col">
+            <!-- 
+              <a
+                href="/dashboard"
+                class="text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium"
+                >Dashboard</a
+              >
+            <a
+            href="/income"
+            class="text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium"
+            >Ingresos</a
+          >
+          <a
+            href="/expenses"
+            class="text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium"
+            >Gastos</a
+          >
+          <a
+            href="/charts"
+            class="text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium"
+            >Graficos</a
+          > -->
+          </nav>
+          <button class="md:hidden">
+            <svg
+              class="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M4 6h16M4 12h16m-7 6h7"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <div class="flex-grow p-4">
+      <div
+        class="sticky top-4 z-10 px-4 py-6 bg-white shadow-md flex flex-col rounded-md justify-center"
+      >
+        <FinanceTotals />
+      </div>
+      <slot />
+    </div>
+  </div>
+</PrincipalLayout>

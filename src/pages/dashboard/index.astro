@@ -1,10 +1,10 @@
 ---
-import Layout from "../../layouts/Layout.astro";
+import DashboardLayout from "../../layouts/Dashboard.Layout.astro";
 import FinanceForm from "../../components/FinanceForm.astro";
 import FinanceRecently from "../../components/ListView.astro/RecentlyListView.astro";
 ---
 
-<Layout>
+<DashboardLayout>
   <main class="container mx-auto p-4">
     <h1 class="text-3xl font-bold mb-6">Mis Finanzas Personales</h1>
 
@@ -26,7 +26,7 @@ import FinanceRecently from "../../components/ListView.astro/RecentlyListView.as
       </div>
     </div>
   </main>
-</Layout>
+</DashboardLayout>
 
 <style>
   :root {
@@ -35,7 +35,6 @@ import FinanceRecently from "../../components/ListView.astro/RecentlyListView.as
     --success: #10b981;
     --danger: #ef4444;
   }
-
   body {
     background-color: #f3f4f6;
     color: #1f2937;

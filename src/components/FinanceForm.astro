@@ -1,0 +1,262 @@
+---
+import { Categories, TRANSACTIONS } from "src/utils/config";
+---
+
+<form id="transactionForm" class="space-y-6">
+  <div class="space-y-1">
+    <label for="description" class="block text-sm font-medium text-gray-700"
+      >Descripción</label
+    >
+    <input
+      type="text"
+      id="description"
+      class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2.5 border"
+      placeholder="Ej: Salario, Comida, Transporte..."
+      required
+    />
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div class="space-y-1">
+      <label for="amount" class="block text-sm font-medium text-gray-700"
+        >Monto</label
+      >
+      <div class="relative rounded-md shadow-sm">
+        <div
+          class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"
+        >
+          <span class="text-gray-500 sm:text-sm">$</span>
+        </div>
+        <input
+          type="number"
+          id="amount"
+          step="0.01"
+          min="0.01"
+          class="block w-full rounded-md border-gray-300 pl-7 pr-12 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2.5 border"
+          placeholder="0.00"
+          required
+        />
+      </div>
+    </div>
+
+    <div class="space-y-1">
+      <label for="type" class="block text-sm font-medium text-gray-700"
+        >Tipo</label
+      >
+      <select
+        id="type"
+        class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2.5 border"
+        required
+      >
+        <option value={TRANSACTIONS.income}>Ingreso</option>
+        <option value={TRANSACTIONS.expense}>Gasto</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="space-y-1">
+    <label for="category" class="block text-sm font-medium text-gray-700"
+      >Categoría</label
+    >
+    <select
+      id="category"
+      class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2.5 border"
+      required
+    >
+      <optgroup label="Ingresos">
+        {
+          Object.values(Categories.incomes).map((category) => (
+            <option value={category.toLowerCase()}>{category}</option>
+          ))
+        }
+      </optgroup>
+      <optgroup label="Gastos">
+        {
+          Object.values(Categories.expenses).map((category) => (
+            <option value={category.toLowerCase()}>{category}</option>
+          ))
+        }
+      </optgroup>
+    </select>
+  </div>
+
+  <div class="space-y-1">
+    <label for="date" class="block text-sm font-medium text-gray-700"
+      >Fecha</label
+    >
+    <input
+      type="date"
+      id="date"
+      class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2.5 border"
+      required
+    />
+  </div>
+
+  <div class="pt-2">
+    <button
+      id="addTransaction"
+      type="button"
+      class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors duration-200"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="h-5 w-5 mr-2"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M12 4v16m8-8H4"></path>
+      </svg>
+      Agregar Transacción
+    </button>
+  </div>
+</form>
+
+<script>
+  import { EVENT_NAME, TRANSACTIONS } from "src/utils/config";
+  import { getTransactions, setTransactions } from "src/utils/storage";
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const form = document.getElementById("transactionForm");
+    if (!form) return;
+
+    // Add animation on form load
+    form.classList.add("animate-fade-in");
+
+    // Helper function to get input elements with type safety
+    function getInputElement<T extends HTMLElement>(id: string): T {
+      const element = document.getElementById(id);
+      if (!element) {
+        console.error(`Element with id ${id} not found`);
+        throw new Error(`Element with id ${id} not found`);
+      }
+      return element as T;
+    }
+
+    // Set default date to today
+    const today = new Date().toISOString().split("T")[0];
+    const dateInput = getInputElement<HTMLInputElement>("date");
+    dateInput.value = today;
+
+    // Get form elements
+    const typeSelect = getInputElement<HTMLSelectElement>("type");
+    const categorySelect = getInputElement<HTMLSelectElement>("category");
+    const descriptionInput = getInputElement<HTMLInputElement>("description");
+    const amountInput = getInputElement<HTMLInputElement>("amount");
+    const addButton = getInputElement<HTMLButtonElement>("addTransaction");
+
+    addButton.addEventListener("click", () => {
+      const description = descriptionInput.value.trim();
+      const amount = parseFloat(amountInput.value);
+      const type = typeSelect.value as "income" | "expense";
+      const category = categorySelect.value;
+      const date = dateInput.value;
+
+      if (!description || isNaN(amount) || amount <= 0) {
+        alert("Por favor completa todos los campos correctamente");
+        return;
+      }
+
+      const transaction = {
+        id: crypto.randomUUID(),
+        description,
+        amount,
+        type,
+        category,
+        date,
+        createdAt: new Date(
+          Date.now() - new Date().getTimezoneOffset() * 60000
+        ).toISOString(),
+      };
+
+      const transactions = getTransactions();
+      transactions.push(transaction);
+      setTransactions(transactions);
+
+      descriptionInput.value = "";
+      amountInput.value = "";
+      typeSelect.value = TRANSACTIONS.income;
+      categorySelect.value = categorySelect.options[0].value;
+      dateInput.value = today;
+
+      window.dispatchEvent(new Event(EVENT_NAME.TRANSACTIONS_UPDATED));
+    });
+  });
+</script>
+
+<style>
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes shake {
+    0%,
+    100% {
+      transform: translateX(0);
+    }
+    10%,
+    30%,
+    50%,
+    70%,
+    90% {
+      transform: translateX(-5px);
+    }
+    20%,
+    40%,
+    60%,
+    80% {
+      transform: translateX(5px);
+    }
+  }
+
+  .animate-fade-in {
+    animation: fadeIn 0.3s ease-out forwards;
+  }
+
+  .animate-shake {
+    animation: shake 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+  }
+
+  .animate-pulse {
+    animation: pulse 1s infinite;
+  }
+
+  @keyframes pulse {
+    0%,
+    100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.05);
+    }
+  }
+
+  /* Custom focus styles */
+  input:focus,
+  select:focus,
+  button:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+  }
+
+  /* Custom select arrow */
+  select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+    background-position: right 0.5rem center;
+    background-repeat: no-repeat;
+    background-size: 1.5em 1.5em;
+    padding-right: 2.5rem;
+  }
+</style>

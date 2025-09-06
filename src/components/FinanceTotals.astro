@@ -1,0 +1,75 @@
+<!-- Summary Cards -->
+<div
+  style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; margin-bottom: 1.5rem;"
+>
+  <div
+    style="background-color: #f0fdf4; padding: 1rem; border-radius: 0.5rem; border: 1px solid #dcfce7;"
+  >
+    <div style="color: #16a34a; font-size: 0.875rem; font-weight: 500;">
+      Ingresos Totales
+    </div>
+    <div
+      id="totalIncome"
+      style="font-size: 1.5rem; font-weight: 700; color: #166534;"
+    >
+      $0.00
+    </div>
+  </div>
+  <div
+    style="background-color: #fef2f2; padding: 1rem; border-radius: 0.5rem; border: 1px solid #fecaca;"
+  >
+    <div style="color: #dc2626; font-size: 0.875rem; font-weight: 500;">
+      Gastos Totales
+    </div>
+    <div
+      id="totalExpense"
+      style="font-size: 1.5rem; font-weight: 700; color: #991b1b;"
+    >
+      $0.00
+    </div>
+  </div>
+  <div
+    style="background-color: #eff6ff; padding: 1rem; border-radius: 0.5rem; border: 1px solid #bfdbfe;"
+  >
+    <div style="color: #2563eb; font-size: 0.875rem; font-weight: 500;">
+      Balance
+    </div>
+    <div
+      id="balance"
+      style="font-size: 1.5rem; font-weight: 700; color: #1e40af;"
+    >
+      $0.00
+    </div>
+  </div>
+</div>
+
+<script>
+  // Calculate summary
+  import { calculateSummary } from "../utils/lib";
+  import { formatCurrency } from "../utils/lib";
+  import type { Transaction } from "../types/finance";
+  import { getTransactions } from "../utils/storage";
+  import { EVENT_NAME } from "src/utils/config";
+
+  // Update summary cards
+  const updateSummary = (transactions: Transaction[]) => {
+    const summary = calculateSummary(transactions);
+    const totalIncomeEl = document.getElementById("totalIncome");
+    const totalExpenseEl = document.getElementById("totalExpense");
+    const balanceEl = document.getElementById("balance");
+
+    if (totalIncomeEl)
+      totalIncomeEl.textContent = formatCurrency(summary.income);
+    if (totalExpenseEl)
+      totalExpenseEl.textContent = formatCurrency(summary.expense);
+    if (balanceEl) balanceEl.textContent = formatCurrency(summary.balance);
+  };
+
+  window.addEventListener("DOMContentLoaded", () => {
+    updateSummary(getTransactions());
+  });
+
+  window.addEventListener(EVENT_NAME.TRANSACTIONS_UPDATED, () => {
+    updateSummary(getTransactions());
+  });
+</script>

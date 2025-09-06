@@ -1,0 +1,98 @@
+---
+// This component initializes and provides toast notification functionality
+---
+
+<!-- Import CSS -->
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+
+<script>
+// Toast configuration
+const defaultConfig = {
+  duration: 3000,                    // Duration in milliseconds
+  gravity: 'top',                   // Top or bottom position
+  position: 'right',                // Left, center, or right position
+  stopOnFocus: true,                // Stop timeout on window focus loss
+  close: true,                      // Show close button
+  className: '!font-sans !text-sm !font-medium !rounded-lg !shadow-lg',
+  style: {
+    'box-shadow': '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)'
+  }
+};
+
+// Define toast type
+type ToastType = 'info' | 'success' | 'error' | 'warning';
+
+// Toast types with their specific styles
+const toastTypes: Record<ToastType, { background: string; color: string }> = {
+  success: {
+    background: 'linear-gradient(to right, #10B981, #34D399)',
+    color: '#ffffff'
+  },
+  error: {
+    background: 'linear-gradient(to right, #EF4444, #F87171)',
+    color: '#ffffff'
+  },
+  warning: {
+    background: 'linear-gradient(to right, #F59E0B, #FBBF24)',
+    color: '#1F2937'
+  },
+  info: {
+    background: 'linear-gradient(to right, #3B82F6, #60A5FA)',
+    color: '#ffffff'
+  }
+};
+
+// Main toast function
+function showToast(message: string, type: ToastType = 'info') {
+  // Create a promise that resolves when Toastify is loaded
+  const loadToastify = new Promise((resolve) => {
+    if (window.Toastify) {
+      return resolve(window.Toastify);
+    }
+    
+    const script = document.createElement('script');
+    script.src = 'https://cdn.jsdelivr.net/npm/toastify-js';
+    script.onload = () => resolve(window.Toastify);
+    document.head.appendChild(script);
+  });
+
+  loadToastify.then((Toastify: any) => {
+    const config = {
+      ...defaultConfig,
+      text: message,
+      style: {
+        ...defaultConfig.style,
+        ...(toastTypes[type as ToastType] || toastTypes.info)
+      }
+    };
+
+    const toast = Toastify(config);
+    toast.showToast();
+  }).catch(error => {
+    console.error('Error loading Toastify:', error);
+  });
+}
+
+// Extend Window interface
+declare global {
+  interface Window {
+    showToast: (message: string, type?: ToastType) => void;
+    showSuccess: (message: string) => void;
+    showError: (message: string) => void;
+    showWarning: (message: string) => void;
+    showInfo: (message: string) => void;
+  }
+}
+
+// Expose toast functions to window
+window.showToast = showToast;
+window.showSuccess = (message) => showToast(message, 'success');
+window.showError = (message) => showToast(message, 'error');
+window.showWarning = (message) => showToast(message, 'warning');
+window.showInfo = (message) => showToast(message, 'info');
+
+// Show a test toast in development
+if (import.meta.env?.DEV) {
+  window.showSuccess('Toast notifications are ready!');
+}
+</script>

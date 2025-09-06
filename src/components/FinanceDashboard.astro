@@ -1,0 +1,89 @@
+<!-- Charts -->
+<div style="display: flex; flex-direction: column; gap: 1.5rem;">
+  <div
+    style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;"
+  >
+    <div
+      style="background: white; padding: 1rem; border-radius: 0.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1);"
+    >
+      <h3 style="font-size: 1.125rem; font-weight: 500; margin-bottom: 1rem;">
+        Ingresos (Últimos 30 días)
+      </h3>
+      <canvas id="incomeChart"></canvas>
+    </div>
+    <div
+      style="background: white; padding: 1rem; border-radius: 0.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1);"
+    >
+      <h3 style="font-size: 1.125rem; font-weight: 500; margin-bottom: 1rem;">
+        Gastos (Últimos 30 días)
+      </h3>
+      <canvas id="expenseChart"></canvas>
+    </div>
+  </div>
+</div>
+
+<script>
+  import type { Chart } from "chart.js";
+  import { generateChart } from "src/utils/chart";
+  import { EVENT_NAME } from "src/utils/config";
+  import { getTransactions } from "src/utils/storage";
+
+  // At the top of your script section
+  const chartRefs = {
+    income: { current: null as Chart | null },
+    expense: { current: null as Chart | null },
+  };
+
+  function generateIncomeChart() {
+    const transactions = getTransactions();
+    const income = transactions.filter((t) => t.type === "income").slice(-30);
+
+    generateChart({
+      chartRef: chartRefs.income,
+      title: "Ingresos (Últimos 30 días)",
+      labels: income.map((t) => new Date(t.date).toLocaleDateString()),
+      data: income.map((t) => t.amount),
+      type: "bar",
+      elementId: "incomeChart",
+      options: {
+        backgroundColor: "#16a34a80",
+      },
+    });
+  }
+
+  function generateExpenseChart() {
+    const transactions = getTransactions();
+    const expense = transactions.filter((t) => t.type === "expense").slice(-30);
+
+    generateChart({
+      chartRef: chartRefs.expense,
+      title: "Gastos (Últimos 30 días)",
+      labels: expense.map((t) => new Date(t.date).toLocaleDateString()),
+      data: expense.map((t) => t.amount),
+      type: "bar",
+      elementId: "expenseChart",
+      options: {
+        backgroundColor: "#ef444480",
+      },
+    });
+  }
+
+  window.addEventListener("load", () => {
+    generateIncomeChart();
+    generateExpenseChart();
+  });
+
+  // Listen for localStorage changes
+  window.addEventListener("storage", (e) => {
+    if (e.key === "transactions") {
+      generateIncomeChart();
+      generateExpenseChart();
+    }
+  });
+
+  // Listen for custom events (for same-tab updates)
+  window.addEventListener(EVENT_NAME.TRANSACTIONS_UPDATED, () => {
+    generateIncomeChart();
+    generateExpenseChart();
+  });
+</script>

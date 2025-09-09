@@ -10,6 +10,22 @@
     <div id="transactions">
       <!-- Transactions will be inserted here by JavaScript -->
     </div>
+
+    <div class="flex justify-center py-3">
+      <div class="flex gap-3 items-center">
+        <button
+          id="anteriorBtn"
+          class="px-6 py-2 border rounded bg-primary text-white hover:bg-primary/80"
+          >Anterior</button
+        >
+        <span id="pageInfo" class="text-sm text-gray-500">1 de 1</span>
+        <button
+          id="siguienteBtn"
+          class="px-6 py-2 border rounded bg-primary text-white hover:bg-primary/80"
+          >Siguiente</button
+        >
+      </div>
+    </div>
   </div>
 </div>
 
@@ -19,18 +35,55 @@
   import { categoryConfig, EVENT_NAME } from "src/utils/config";
   import { getTransactions } from "src/utils/storage";
 
+  const transactions = getTransactions();
+  const income = transactions.filter((t) => t.type === "income");
+
+  let rowsPerPage = 5;
+  let maxPage = Math.ceil(income.length / rowsPerPage);
+  let currentPage = 1;
+  const anteriorBtn = document.getElementById("anteriorBtn");
+  const siguienteBtn = document.getElementById("siguienteBtn");
+  const pageInfo = document.getElementById("pageInfo");
+  const container = document.getElementById("transactions");
+
+  anteriorBtn?.addEventListener("click", () => {
+    if (currentPage > 1) {
+      currentPage--;
+    }
+    pageInfo!.textContent = `Página ${currentPage} de ${maxPage} (${income.length} transacciones)`;
+    updateTransactions({ rowsPerPage, currentPage });
+  });
+
+  siguienteBtn?.addEventListener("click", () => {
+    if (currentPage < maxPage) {
+      currentPage++;
+    }
+    pageInfo!.textContent = `Página ${currentPage} de ${maxPage} (${income.length} transacciones)`;
+    updateTransactions({ rowsPerPage, currentPage });
+  });
+
   // Update recent transactions
-  const updateTransactions = (transactions: Transaction[]) => {
-    const container = document.getElementById("transactions");
+  const updateTransactions = ({
+    rowsPerPage,
+    currentPage,
+  }: {
+    rowsPerPage: number;
+    currentPage: number;
+  }) => {
+    const paginatedIncome = income.slice(
+      (currentPage - 1) * rowsPerPage,
+      currentPage * rowsPerPage
+    );
+
     if (!container) return;
 
-    if (transactions.length === 0) {
+    if (paginatedIncome.length === 0) {
       container.innerHTML =
         '<div style="padding: 1rem; text-align: center; color: #6b7280;">No hay transacciones recientes</div>';
       return;
     }
 
-    container.innerHTML = transactions
+    container.innerHTML = paginatedIncome
       .map(
         (t: Transaction) => `
       <div style="padding: 1rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e5e7eb;">
@@ -49,26 +102,19 @@
 
   // Initialize on load
   document.addEventListener("DOMContentLoaded", () => {
-    const transactions = getTransactions();
-    const incomeTransactions = transactions.filter((t) => t.type === "income");
-    updateTransactions(incomeTransactions);
+    pageInfo!.textContent = `Página ${currentPage} de ${maxPage} (${income.length} transacciones)`;
+    updateTransactions({ rowsPerPage, currentPage });
   });
 
   // Listen for localStorage changes
   window.addEventListener("storage", (e) => {
     if (e.key === "transactions") {
-      const transactions = getTransactions();
-      const incomeTransactions = transactions.filter(
-        (t) => t.type === "income"
-      );
-      updateTransactions(incomeTransactions);
+      updateTransactions({ rowsPerPage, currentPage });
     }
   });
 
   // Listen for custom events (for same-tab updates)
   window.addEventListener(EVENT_NAME.TRANSACTIONS_UPDATED, () => {
-    const transactions = getTransactions();
-    const incomeTransactions = transactions.filter((t) => t.type === "income");
-    updateTransactions(incomeTransactions);
+    updateTransactions({ rowsPerPage, currentPage });
   });
 </script>

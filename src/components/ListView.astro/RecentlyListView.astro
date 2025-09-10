@@ -21,9 +21,17 @@ import Pagination from "@components/Pagination.astro";
     getTransactionsToday,
     sortTransactionsByCreated,
   } from "src/utils/lib";
+  import { EVENT_NAME } from "src/utils/config";
 
   const transactions = getTransactions();
   const transactionsToday = getTransactionsToday(transactions);
   const transactionSort = sortTransactionsByCreated(transactionsToday);
   paginateTransactions(transactionSort);
+
+  window.addEventListener(EVENT_NAME.TRANSACTIONS_UPDATED, () => {
+    const transactions = getTransactions();
+    const transactionsToday = getTransactionsToday(transactions);
+    const transactionSort = sortTransactionsByCreated(transactionsToday);
+    paginateTransactions(transactionSort);
+  });
 </script>

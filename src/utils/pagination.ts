@@ -1,6 +1,5 @@
 import type { Transaction } from "src/types/finance";
 import { renderTransactions } from "./transactions";
-import { EVENT_NAME } from "./config";
 
 export const paginateTransactions = (transactions: Transaction[]) => {
   let rowsPerPage = 5;
@@ -37,17 +36,14 @@ export const paginateTransactions = (transactions: Transaction[]) => {
     }
   });
 
-  // Listen for custom events (for same-tab updates)
-  window.addEventListener(EVENT_NAME.TRANSACTIONS_UPDATED, () => {
-    render(transactions);
-  });
-
   const render = (transactions: Transaction[]) => {
-    const paginatedIncome = transactions.slice(
+    const paginatedTransactions = transactions.slice(
       (currentPage - 1) * rowsPerPage,
       currentPage * rowsPerPage
     );
     pageInfo!.textContent = `Página ${currentPage} de ${maxPage} (${transactions.length} transacciones)`;
-    renderTransactions({ transactions: paginatedIncome });
+    renderTransactions({ transactions: paginatedTransactions });
   };
+
+  render(transactions);
 };

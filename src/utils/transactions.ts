@@ -20,6 +20,8 @@ export const renderTransactions = ({
 }) => {
   const container = document.getElementById("transactions");
 
+  console.log({ transactions });
+
   if (!container) return;
 
   if (transactions.length === 0) {

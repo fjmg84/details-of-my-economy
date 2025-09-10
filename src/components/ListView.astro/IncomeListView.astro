@@ -6,9 +6,7 @@ import Pagination from "@components/Pagination.astro";
   style="margin-top: 1.5rem; background: white; border-radius: 0.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1); overflow: hidden;"
 >
   <div style="padding: 1rem 1.5rem; border-bottom: 1px solid #e5e7eb;">
-    <h3 style="font-size: 1.125rem; font-weight: 500;">
-      Transacciones de Ingresos
-    </h3>
+    <h2 class="text-xl font-semibold mb-4">Transacciones de Ingresos</h2>
   </div>
   <div style="border-top: 1px solid #e5e7eb;">
     <div id="transactions">
@@ -25,5 +23,5 @@ import Pagination from "@components/Pagination.astro";
 
   const transactions = getTransactions();
   const income = transactions.filter((t) => t.type === "income");
-  paginateTransactions(income, "income");
+  paginateTransactions(income);
 </script>

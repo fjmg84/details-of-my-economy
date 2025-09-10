@@ -1,0 +1,18 @@
+---
+const { id, defaultValue, bgColor, borderColor, textColor, title } =
+  Astro.props;
+---
+
+<div
+  style={`background-color: ${bgColor}; padding: 1rem; border-radius: 0.5rem; border: 1px solid ${borderColor};`}
+>
+  <div style={`color: ${textColor}; font-size: 0.875rem; font-weight: 500;`}>
+    {title}
+  </div>
+  <div
+    id={id}
+    style={`font-size: 1.5rem; font-weight: 700; color: ${textColor};`}
+  >
+    {defaultValue}
+  </div>
+</div>

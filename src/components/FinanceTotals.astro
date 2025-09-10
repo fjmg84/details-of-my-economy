@@ -1,46 +1,35 @@
+---
+import CardColors from "./CardColors.astro";
+---
+
 <!-- Summary Cards -->
 <div
   style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;"
 >
-  <div
-    style="background-color: #f0fdf4; padding: 1rem; border-radius: 0.5rem; border: 1px solid #dcfce7;"
-  >
-    <div style="color: #16a34a; font-size: 0.875rem; font-weight: 500;">
-      Ingresos Totales
-    </div>
-    <div
-      id="totalIncome"
-      style="font-size: 1.5rem; font-weight: 700; color: #166534;"
-    >
-      $0.00
-    </div>
-  </div>
-  <div
-    style="background-color: #fef2f2; padding: 1rem; border-radius: 0.5rem; border: 1px solid #fecaca;"
-  >
-    <div style="color: #dc2626; font-size: 0.875rem; font-weight: 500;">
-      Gastos Totales
-    </div>
-    <div
-      id="totalExpense"
-      style="font-size: 1.5rem; font-weight: 700; color: #991b1b;"
-    >
-      $0.00
-    </div>
-  </div>
-  <div
-    style="background-color: #eff6ff; padding: 1rem; border-radius: 0.5rem; border: 1px solid #bfdbfe;"
-  >
-    <div style="color: #2563eb; font-size: 0.875rem; font-weight: 500;">
-      Balance
-    </div>
-    <div
-      id="balance"
-      style="font-size: 1.5rem; font-weight: 700; color: #1e40af;"
-    >
-      $0.00
-    </div>
-  </div>
+  <CardColors
+    id="totalIncome"
+    defaultValue="$0.00"
+    bgColor="#f0fdf4"
+    borderColor="#dcfce7"
+    textColor="#16a34a"
+    title="Ingresos Totales"
+  />
+  <CardColors
+    id="totalExpense"
+    defaultValue="$0.00"
+    bgColor="#fef2f2"
+    borderColor="#fecaca"
+    textColor="#dc2626"
+    title="Gastos Totales"
+  />
+  <CardColors
+    id="balance"
+    defaultValue="$0.00"
+    bgColor="#eff6ff"
+    borderColor="#bfdbfe"
+    textColor="#2563eb"
+    title="Balance"
+  />
 </div>
 
 <script>
@@ -70,6 +59,8 @@
   const month = today.getMonth() + 1;
 
   const filterTransactionsByMonth = (transactions: Transaction[]) => {
+    if (transactions.length === 0) return [];
+
     return transactions.filter((t) => {
       const createdAt = new Date(t.createdAt);
       return (

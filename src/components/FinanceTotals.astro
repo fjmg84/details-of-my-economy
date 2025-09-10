@@ -65,11 +65,29 @@
     if (balanceEl) balanceEl.textContent = formatCurrency(summary.balance);
   };
 
+  const today = new Date();
+  const year = today.getFullYear();
+  const month = today.getMonth() + 1;
+
+  const filterTransactionsByMonth = (transactions: Transaction[]) => {
+    return transactions.filter((t) => {
+      const createdAt = new Date(t.createdAt);
+      return (
+        createdAt.getFullYear() === year && createdAt.getMonth() + 1 === month
+      );
+    });
+  };
+
   window.addEventListener("DOMContentLoaded", () => {
-    updateSummary(getTransactions());
+    const transactions = getTransactions();
+    const filteredTransactions = filterTransactionsByMonth(transactions);
+    updateSummary(filteredTransactions);
   });
 
   window.addEventListener(EVENT_NAME.TRANSACTIONS_UPDATED, () => {
-    updateSummary(getTransactions());
+    const transactions = getTransactions();
+    const filteredTransactions = filterTransactionsByMonth(transactions);
+
+    updateSummary(filteredTransactions);
   });
 </script>

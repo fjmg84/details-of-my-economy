@@ -1,11 +1,8 @@
 import type { Transaction } from "src/types/finance";
-import { updateTransactions } from "./updateTransactions";
+import { renderTransactions } from "./transactions";
 import { EVENT_NAME } from "./config";
 
-export const paginateTransactions = (
-  transactions: Transaction[],
-  type: "income" | "expense"
-) => {
+export const paginateTransactions = (transactions: Transaction[]) => {
   let rowsPerPage = 5;
   let maxPage = Math.ceil(transactions.length / rowsPerPage);
   let currentPage = 1;
@@ -17,33 +14,40 @@ export const paginateTransactions = (
     if (currentPage > 1) {
       currentPage--;
     }
-    pageInfo!.textContent = `Página ${currentPage} de ${maxPage} (${transactions.length} transacciones)`;
-    updateTransactions({ rowsPerPage, currentPage, transactions, type });
+
+    render(transactions);
   });
 
   siguienteBtn?.addEventListener("click", () => {
     if (currentPage < maxPage) {
       currentPage++;
     }
-    pageInfo!.textContent = `Página ${currentPage} de ${maxPage} (${transactions.length} transacciones)`;
-    updateTransactions({ rowsPerPage, currentPage, transactions, type });
+    render(transactions);
   });
 
   // Initialize on load
   document.addEventListener("DOMContentLoaded", () => {
-    pageInfo!.textContent = `Página ${currentPage} de ${maxPage} (${transactions.length} transacciones)`;
-    updateTransactions({ rowsPerPage, currentPage, transactions, type });
+    render(transactions);
   });
 
   // Listen for localStorage changes
   window.addEventListener("storage", (e) => {
     if (e.key === "transactions") {
-      updateTransactions({ rowsPerPage, currentPage, transactions, type });
+      render(transactions);
     }
   });
 
   // Listen for custom events (for same-tab updates)
   window.addEventListener(EVENT_NAME.TRANSACTIONS_UPDATED, () => {
-    updateTransactions({ rowsPerPage, currentPage, transactions, type });
+    render(transactions);
   });
+
+  const render = (transactions: Transaction[]) => {
+    const paginatedIncome = transactions.slice(
+      (currentPage - 1) * rowsPerPage,
+      currentPage * rowsPerPage
+    );
+    pageInfo!.textContent = `Página ${currentPage} de ${maxPage} (${transactions.length} transacciones)`;
+    renderTransactions({ transactions: paginatedIncome });
+  };
 };

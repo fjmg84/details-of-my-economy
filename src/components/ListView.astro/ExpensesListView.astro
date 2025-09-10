@@ -1,78 +1,27 @@
+---
+import Pagination from "@components/Pagination.astro";
+---
+
 <div
   style="margin-top: 1.5rem; background: white; border-radius: 0.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1); overflow: hidden;"
 >
   <div style="padding: 1rem 1.5rem; border-bottom: 1px solid #e5e7eb;">
-    <h3 style="font-size: 1.125rem; font-weight: 500;">
-      Transacciones de Gastos
-    </h3>
+    <h2 class="text-xl font-semibold mb-4">Transacciones de Gastos</h2>
   </div>
   <div style="border-top: 1px solid #e5e7eb;">
     <div id="transactions">
       <!-- Transactions will be inserted here by JavaScript -->
     </div>
+
+    <Pagination />
   </div>
 </div>
 
 <script>
-  import type { Transaction } from "src/types/finance";
-  import { formatCurrency, formatDate } from "src/utils/lib";
-  import { categoryConfig, EVENT_NAME } from "src/utils/config";
   import { getTransactions } from "src/utils/storage";
+  import { paginateTransactions } from "src/utils/pagination";
 
-  // Update recent transactions
-  const updateTransactions = (transactions: Transaction[]) => {
-    const container = document.getElementById("transactions");
-    if (!container) return;
-
-    if (transactions.length === 0) {
-      container.innerHTML =
-        '<div style="padding: 1rem; text-align: center; color: #6b7280;">No hay transacciones recientes</div>';
-      return;
-    }
-
-    container.innerHTML = transactions
-      .map(
-        (t: Transaction) => `
-      <div style="padding: 1rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e5e7eb;">
-        <div>
-          <div style="font-weight: 500;">${t.description}</div>
-          <div style="font-size: 0.875rem; color: #6b7280;">${categoryConfig[t.category]?.label || t.category} • ${formatDate(t.date)}</div>
-        </div>
-        <div style="font-weight: 500; color: #991b1b">
-          -${formatCurrency(t.amount)}
-        </div>
-      </div>
-    `
-      )
-      .join("");
-  };
-
-  // Initialize on load
-  document.addEventListener("DOMContentLoaded", () => {
-    const transactions = getTransactions();
-    const expenseTransactions = transactions.filter(
-      (t) => t.type === "expense"
-    );
-    updateTransactions(expenseTransactions);
-  });
-
-  // Listen for localStorage changes
-  window.addEventListener("storage", (e) => {
-    if (e.key === "transactions") {
-      const transactions = getTransactions();
-      const expenseTransactions = transactions.filter(
-        (t) => t.type === "expense"
-      );
-      updateTransactions(expenseTransactions);
-    }
-  });
-
-  // Listen for custom events (for same-tab updates)
-  window.addEventListener(EVENT_NAME.TRANSACTIONS_UPDATED, () => {
-    const transactions = getTransactions();
-    const expenseTransactions = transactions.filter(
-      (t) => t.type === "expense"
-    );
-    updateTransactions(expenseTransactions);
-  });
+  const transactions = getTransactions();
+  const expenses = transactions.filter((t) => t.type === "expense");
+  paginateTransactions(expenses);
 </script>

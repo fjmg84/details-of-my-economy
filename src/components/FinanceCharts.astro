@@ -1,24 +1,18 @@
+---
+import Container from "@components/Container.astro";
+---
+
 <!-- Charts -->
 <div style="display: flex; flex-direction: column; gap: 1.5rem;">
   <div
     style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;"
   >
-    <div
-      style="background: white; padding: 1rem; border-radius: 0.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1);"
-    >
-      <h3 style="font-size: 1.125rem; font-weight: 500; margin-bottom: 1rem;">
-        Ingresos (Últimos 30 días)
-      </h3>
+    <Container title="Ingresos (Últimos 30 días)">
       <canvas id="incomeChart"></canvas>
-    </div>
-    <div
-      style="background: white; padding: 1rem; border-radius: 0.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1);"
-    >
-      <h3 style="font-size: 1.125rem; font-weight: 500; margin-bottom: 1rem;">
-        Gastos (Últimos 30 días)
-      </h3>
+    </Container>
+    <Container title="Gastos (Últimos 30 días)">
       <canvas id="expenseChart"></canvas>
-    </div>
+    </Container>
   </div>
 </div>
 

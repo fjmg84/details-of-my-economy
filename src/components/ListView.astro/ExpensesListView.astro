@@ -1,21 +1,15 @@
 ---
 import Pagination from "@components/Pagination.astro";
+import Container from "@components/Container.astro";
 ---
 
-<div
-  style="margin-top: 1.5rem; background: white; border-radius: 0.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1); overflow: hidden;"
->
-  <div style="padding: 1rem 1.5rem; border-bottom: 1px solid #e5e7eb;">
-    <h2 class="text-xl font-semibold mb-4">Transacciones de Gastos</h2>
+<Container title="Transacciones de Gastos">
+  <div id="transactions">
+    <!-- Transactions will be inserted here by JavaScript -->
   </div>
-  <div style="border-top: 1px solid #e5e7eb;">
-    <div id="transactions">
-      <!-- Transactions will be inserted here by JavaScript -->
-    </div>
 
-    <Pagination />
-  </div>
-</div>
+  <Pagination />
+</Container>
 
 <script>
   import { getTransactions } from "src/utils/storage";

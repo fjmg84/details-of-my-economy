@@ -3,81 +3,271 @@ import Container from "@components/Container.astro";
 ---
 
 <!-- Charts -->
-<div style="display: flex; flex-direction: column; gap: 1.5rem;">
-  <div
-    style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;"
-  >
-    <Container title="Ingresos (Últimos 30 días)">
-      <canvas id="incomeChart"></canvas>
-    </Container>
-    <Container title="Gastos (Últimos 30 días)">
-      <canvas id="expenseChart"></canvas>
-    </Container>
+<div class="flex flex-col gap-3">
+  <div class="grid grid-rows-3 md:grid-cols-3 gap-3">
+    <div class="row-span-1 flex justify-center items-start">
+      <Container title="Ingresos (Últimos 30 días)">
+        <canvas id="incomeChart"></canvas>
+      </Container>
+    </div>
+
+    <div class="row-span-1 flex justify-center items-start">
+      <Container title="Gastos (Últimos 30 días)">
+        <canvas id="expenseChart"></canvas>
+      </Container>
+    </div>
+
+    <div class="row-span-1 flex justify-center items-start h-[150px]">
+      <Container title="Ingresos/Gastos (Últimos 30 días)">
+        <canvas id="balanceChart"></canvas>
+      </Container>
+    </div>
+
+    <div class="row-span-1 flex justify-center items-start">
+      <Container title="Ingresos por categoría (Últimos 30 días)">
+        <canvas id="categoryIncomeChart"></canvas>
+      </Container>
+    </div>
+
+    <div class="row-span-1 flex justify-center items-start">
+      <Container title="Gastos por categoría (Últimos 30 días)">
+        <canvas id="categoryExpenseChart"></canvas>
+      </Container>
+    </div>
   </div>
-</div>
 
-<script>
-  import type { Chart } from "chart.js";
-  import { generateChart } from "src/utils/chart";
-  import { EVENT_NAME } from "src/utils/config";
-  import { getTransactions } from "src/utils/storage";
+  <script>
+    import type { Chart } from "chart.js";
+    import { generateChart } from "src/utils/chart";
+    import { filterTransactionsByDateRange } from "src/utils/lib";
+    import { getTransactions } from "src/utils/storage";
 
-  // At the top of your script section
-  const chartRefs = {
-    income: { current: null as Chart | null },
-    expense: { current: null as Chart | null },
-  };
-
-  function generateIncomeChart() {
+    // At the top of your script section
+    const chartRefs = {
+      income: { current: null as Chart | null },
+      expense: { current: null as Chart | null },
+      balance: { current: null as Chart | null },
+      categoryExpense: { current: null as Chart | null },
+      categoryIncome: { current: null as Chart | null },
+    };
     const transactions = getTransactions();
-    const income = transactions.filter((t) => t.type === "income").slice(-30);
+    const expense = transactions.filter((t) => t.type === "expense");
+    const income = transactions.filter((t) => t.type === "income");
+    const incomeFiltered = filterTransactionsByDateRange(income, 30);
+    const expenseFiltered = filterTransactionsByDateRange(expense, 30);
 
-    generateChart({
-      chartRef: chartRefs.income,
-      title: "Ingresos (Últimos 30 días)",
-      labels: income.map((t) => new Date(t.date).toLocaleDateString()),
-      data: income.map((t) => t.amount),
-      type: "bar",
-      elementId: "incomeChart",
-      options: {
-        backgroundColor: "#16a34a80",
-      },
-    });
-  }
+    function generateIncomeChart() {
+      generateChart({
+        chartRef: chartRefs.income,
+        labels: incomeFiltered.map((t) =>
+          new Date(t.date).toLocaleDateString()
+        ),
+        datasets: [
+          {
+            data: incomeFiltered.map((t) => Number(t.amount)),
+            label: "Ingresos",
+          },
+        ],
+        type: "bar",
+        elementId: "incomeChart",
+        options: {
+          backgroundColor: "#16a34a80",
+          plugins: {
+            tooltip: {
+              callbacks: {
+                label: (context) => {
+                  const value = context.formattedValue || null;
 
-  function generateExpenseChart() {
-    const transactions = getTransactions();
-    const expense = transactions.filter((t) => t.type === "expense").slice(-30);
+                  if (value !== null) {
+                    return new Intl.NumberFormat("en-US", {
+                      style: "currency",
+                      currency: "USD",
+                    }).format(Number(value));
+                  }
+                  return "";
+                },
+              },
+            },
+          },
+        },
+      });
+    }
 
-    generateChart({
-      chartRef: chartRefs.expense,
-      title: "Gastos (Últimos 30 días)",
-      labels: expense.map((t) => new Date(t.date).toLocaleDateString()),
-      data: expense.map((t) => t.amount),
-      type: "bar",
-      elementId: "expenseChart",
-      options: {
-        backgroundColor: "#ef444480",
-      },
-    });
-  }
+    function generateExpenseChart() {
+      const expenseFiltered = filterTransactionsByDateRange(expense, 30);
 
-  window.addEventListener("load", () => {
-    generateIncomeChart();
-    generateExpenseChart();
-  });
+      generateChart({
+        chartRef: chartRefs.expense,
+        labels: expenseFiltered.map((t) =>
+          new Date(t.date).toLocaleDateString()
+        ),
+        datasets: [
+          {
+            data: expenseFiltered.map((t) => Number(t.amount)),
+            label: "Gastos",
+          },
+        ],
+        type: "bar",
+        elementId: "expenseChart",
+        options: {
+          backgroundColor: "#ef444480",
+          plugins: {
+            tooltip: {
+              callbacks: {
+                label: (context) => {
+                  if (context.formattedValue !== null) {
+                    return new Intl.NumberFormat("en-US", {
+                      style: "currency",
+                      currency: "USD",
+                    }).format(Number(context.formattedValue));
+                  }
+                  return "";
+                },
+              },
+            },
+          },
+        },
+      });
+    }
 
-  // Listen for localStorage changes
-  window.addEventListener("storage", (e) => {
-    if (e.key === "transactions") {
+    function generateCategoryExpenseChart() {
+      const expenseFiltered = filterTransactionsByDateRange(expense, 30);
+      const expenseGrouped = expenseFiltered.reduce(
+        (acc, t) => {
+          if (!acc[t.category]) {
+            acc[t.category] = 0;
+          }
+          acc[t.category] += Number(t.amount);
+          return acc;
+        },
+        {} as Record<string, number>
+      );
+
+      generateChart({
+        chartRef: chartRefs.categoryExpense,
+        labels: Object.keys(expenseGrouped),
+        datasets: [
+          {
+            data: Object.values(expenseGrouped),
+            label: "Gastos",
+          },
+        ],
+        type: "bar",
+        elementId: "categoryExpenseChart",
+        options: {
+          backgroundColor: "#ef444480",
+          plugins: {
+            tooltip: {
+              callbacks: {
+                label: (context) => {
+                  if (context.formattedValue !== null) {
+                    return new Intl.NumberFormat("en-US", {
+                      style: "currency",
+                      currency: "USD",
+                    }).format(Number(context.formattedValue));
+                  }
+                  return "";
+                },
+              },
+            },
+          },
+        },
+      });
+    }
+
+    function generateCategoryIncomeChart() {
+      const incomeFiltered = filterTransactionsByDateRange(income, 30);
+      const incomeGrouped = incomeFiltered.reduce(
+        (acc, t) => {
+          if (!acc[t.category]) {
+            acc[t.category] = 0;
+          }
+          acc[t.category] += Number(t.amount);
+          return acc;
+        },
+        {} as Record<string, number>
+      );
+
+      generateChart({
+        chartRef: chartRefs.categoryIncome,
+        labels: Object.keys(incomeGrouped),
+        datasets: [
+          {
+            data: Object.values(incomeGrouped),
+            label: "Ingresos",
+          },
+        ],
+        type: "bar",
+        elementId: "categoryIncomeChart",
+        options: {
+          backgroundColor: "#16a34a80",
+          plugins: {
+            tooltip: {
+              callbacks: {
+                label: (context) => {
+                  if (context.formattedValue !== null) {
+                    return new Intl.NumberFormat("en-US", {
+                      style: "currency",
+                      currency: "USD",
+                    }).format(Number(context.formattedValue));
+                  }
+                  return "";
+                },
+              },
+            },
+          },
+        },
+      });
+    }
+
+    function generateBalanceChart() {
+      const incomeBalance = incomeFiltered.reduce(
+        (acc, t) => acc + t.amount,
+        0
+      );
+      const expenseBalance = expenseFiltered.reduce(
+        (acc, t) => acc + t.amount,
+        0
+      );
+
+      generateChart({
+        chartRef: chartRefs.balance,
+        labels: ["Ingresos", "Gastos"],
+        datasets: [
+          {
+            data: [incomeBalance, expenseBalance],
+            label: "Balance",
+          },
+        ],
+        type: "doughnut",
+        elementId: "balanceChart",
+        options: {
+          backgroundColor: ["#16a34a80", "#ef444480"],
+          plugins: {
+            tooltip: {
+              callbacks: {
+                label: (context) => {
+                  if (context.formattedValue !== null) {
+                    return new Intl.NumberFormat("en-US", {
+                      style: "currency",
+                      currency: "USD",
+                    }).format(Number(context.formattedValue));
+                  }
+                  return "";
+                },
+              },
+            },
+          },
+        },
+      });
+    }
+
+    window.addEventListener("load", () => {
       generateIncomeChart();
       generateExpenseChart();
-    }
-  });
-
-  // Listen for custom events (for same-tab updates)
-  window.addEventListener(EVENT_NAME.TRANSACTIONS_UPDATED, () => {
-    generateIncomeChart();
-    generateExpenseChart();
-  });
-</script>
+      generateBalanceChart();
+      generateCategoryExpenseChart();
+      generateCategoryIncomeChart();
+    });
+  </script>
+</div>

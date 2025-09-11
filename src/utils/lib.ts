@@ -40,7 +40,7 @@ export const filterTransactionsByDateRange = (
 ): Transaction[] => {
   const date = new Date();
   date.setDate(date.getDate() - days);
-  return transactions.filter((t) => new Date(t.date) >= date);
+  return transactions.filter((t) => new Date(t.createdAt) >= date);
 };
 
 export const getTransactionsToday = (transactions: Transaction[]) => {

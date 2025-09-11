@@ -10,24 +10,22 @@ Chart.register(...registerables);
 interface GenerateChartParams {
   chartRef: { current: Chart | null };
   type: ChartType;
-  title: string;
   elementId: string;
   labels: string[];
-  data: number[];
+  datasets: ChartConfiguration<ChartType>["data"]["datasets"];
   options?: ChartConfiguration<ChartType>["options"];
 }
 
 export function generateChart({
   chartRef,
-  title,
+  datasets,
   labels,
-  data,
   type,
   elementId,
   options = {},
 }: GenerateChartParams) {
   const canvas = document.getElementById(elementId) as HTMLCanvasElement | null;
-  if (!canvas || !labels.length || !data.length) return;
+  if (!canvas || !labels.length || !datasets.length) return;
 
   // Destroy existing chart if it exists
   if (chartRef.current) {
@@ -36,16 +34,12 @@ export function generateChart({
 
   const config: ChartConfiguration = {
     type,
+
     data: {
       labels,
-      datasets: [
-        {
-          label: title,
-          data,
-          ...options,
-        },
-      ],
+      datasets,
     },
+    options,
   };
 
   chartRef.current = new Chart(canvas, config);

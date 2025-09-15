@@ -1,0 +1,9 @@
+---
+const { color, sizeY, sizeX, ...rest } = Astro.props;
+---
+
+<div class={`h-[${sizeY}px] w-[${sizeX}px]`}>
+  <svg class={`text-${color}`} fill="none" stroke="currentColor" {...rest}>
+    <slot />
+  </svg>
+</div>

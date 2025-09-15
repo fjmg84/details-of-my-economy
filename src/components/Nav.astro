@@ -4,11 +4,12 @@ import ChartIcon from "./Icons/ChartIcon.astro";
 import ExpenseIcon from "./Icons/ExpenseIcon.astro";
 import IncomeIcon from "./Icons/IncomeIcon.astro";
 import AddIcon from "./Icons/AddIcon.astro";
+import IconComponent from "./Icons/IconComponent.astro";
 
 const { pathname } = Astro.url;
 ---
 
-<nav class="hidden md:flex flex-col mt-4">
+<nav class="flex flex-col mt-4">
   <a
     href="/dashboard/"
     class={pathname === "/dashboard/"
@@ -16,7 +17,9 @@ const { pathname } = Astro.url;
       : "text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium flex items-center"}
   >
     <div class="flex items-center gap-2">
-      <AddIcon color="currentColor" sizeX="24" sizeY="24" />
+      <IconComponent color="currentColor" sizeX="24" sizeY="24">
+        <AddIcon />
+      </IconComponent>
       <span class="ml-2">Agregar Transacción</span>
     </div>
   </a>
@@ -27,7 +30,9 @@ const { pathname } = Astro.url;
       : "text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium flex items-center"}
   >
     <div class="flex items-center gap-2">
-      <IncomeIcon sizeX="24" sizeY="24" color="currentColor" />
+      <IconComponent color="currentColor" sizeX="24" sizeY="24">
+        <IncomeIcon />
+      </IconComponent>
       <span class="ml-2">Lista de Ingresos</span>
       <span
         id="incomeCount"
@@ -42,7 +47,9 @@ const { pathname } = Astro.url;
       : "text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium flex items-center"}
   >
     <div class="flex items-center gap-2">
-      <ExpenseIcon sizeX="24" sizeY="24" color="currentColor" />
+      <IconComponent color="currentColor" sizeX="24" sizeY="24">
+        <ExpenseIcon />
+      </IconComponent>
       <span class="ml-2">Lista de Gastos</span>
       <span
         id="expenseCount"
@@ -57,7 +64,14 @@ const { pathname } = Astro.url;
       : "text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium flex items-center"}
   >
     <div class="flex items-center gap-2">
-      <ChartIcon sizeX="24" sizeY="24" color="currentColor" />
+      <IconComponent
+        color="currentColor"
+        sizeX="24"
+        sizeY="24"
+        viewBox="0 0 2048 2048"
+      >
+        <ChartIcon />
+      </IconComponent>
       <span class="ml-2">Graficos</span>
     </div>
   </a>
@@ -68,7 +82,9 @@ const { pathname } = Astro.url;
       : "text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium flex items-center"}
   >
     <div class="flex items-center gap-2">
-      <AssistantIcon sizeX="24" sizeY="24" color="currentColor" />
+      <IconComponent color="currentColor" sizeX="24" sizeY="24">
+        <AssistantIcon />
+      </IconComponent>
       <span class="ml-2">Asistente IA</span>
     </div>
   </a>

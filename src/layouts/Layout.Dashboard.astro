@@ -2,35 +2,46 @@
 import FinanceTotals from "@components/FinanceTotals.astro";
 import PrincipalLayout from "./Layout.astro";
 import Nav from "@components/Nav.astro";
+import IconComponent from "@components/Icons/IconComponent.astro";
+import MenuIcon from "@components/Icons/MenuIcon.astro";
 ---
 
 <PrincipalLayout>
-  <div class="grid grid-flow-col grid-cols-6">
-    <nav class="bg-white row-span-1">
+  <div class="grid md:grid-flow-col md:grid-cols-6">
+    <div class="hidden md:flex bg-white row-span-1">
       <div class="max-w-7xl mx-auto">
         <div class="flex flex-col md:px-4 md:py-2">
           <a href="/" class="text-2xl font-bold text-indigo-600">Mi Economía</a>
           <Nav />
-          <!-- <button class="md:hidden">
-            <svg
-              class="h-6 w-6"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M4 6h16M4 12h16m-7 6h7"></path>
-            </svg>
-          </button> -->
         </div>
       </div>
-    </nav>
+    </div>
 
-    <div class="bg-white col-span-5">
-      <header class="sticky top-0 z-10 px-4 py-6">
+    <div
+      id="mobileNav"
+      class="absolute bg-white z-50 w-full shadow-lg transition-all duration-300 -right-full h-screen p-10"
+    >
+      <div class="flex flex-col gap-4">
+        <a href="/" class="text-2xl font-bold text-indigo-600">Mi Economía</a>
+
+        <Nav />
+
+        <FinanceTotals />
+      </div>
+    </div>
+
+    <div
+      class="md:hidden fixed top-10 right-10 z-50 bg-[#bfdbfe] p-2 rounded-lg"
+    >
+      <button id="mobileNavBtn">
+        <IconComponent color="currentColor" sizeX="24" sizeY="24">
+          <MenuIcon />
+        </IconComponent>
+      </button>
+    </div>
+
+    <div class="bg-white col-span-12 md:col-span-5">
+      <header class="hidden md:block sticky top-0 z-10 px-4 py-6">
         <FinanceTotals />
       </header>
       <div class="p-10 overflow-auto h-[calc(100vh-120px)] bg-gray-100">
@@ -39,3 +50,17 @@ import Nav from "@components/Nav.astro";
     </div>
   </div>
 </PrincipalLayout>
+
+<script>
+  const mobileNavBtn = document.getElementById("mobileNavBtn");
+
+  if (mobileNavBtn) {
+    mobileNavBtn.addEventListener("click", () => {
+      const nav = document.getElementById("mobileNav");
+      if (nav) {
+        nav.classList.toggle("-right-full");
+        nav.classList.toggle("right-0");
+      }
+    });
+  }
+</script>

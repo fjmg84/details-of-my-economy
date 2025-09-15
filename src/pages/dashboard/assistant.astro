@@ -1,0 +1,87 @@
+---
+import FinancialAssistant from "@components/FinancialAssistant.astro";
+import Layout from "../../layouts/Layout.Dashboard.astro";
+---
+
+<Layout>
+  <div class="">
+    <div class="mb-6">
+      <h1 class="text-3xl font-bold text-gray-900 mb-2">
+        Asistente Financiera
+      </h1>
+      <p class="text-gray-600">
+        Interactúa con Demia para obtener análisis detallados de tus finanzas,
+        generar reportes personalizados y resolver dudas sobre tus
+        transacciones.
+      </p>
+    </div>
+
+    <FinancialAssistant />
+
+    <!-- Tips Section -->
+    <div class="bg-blue-50 rounded-lg p-6 mb-6">
+      <h3 class="text-lg font-semibold text-blue-900 mb-3">
+        💡 Consejos para usar Demia
+      </h3>
+      <div class="grid md:grid-cols-2 gap-4 text-sm text-blue-800">
+        <div>
+          <h4 class="font-medium mb-2">Preguntas que puedes hacer:</h4>
+          <ul class="space-y-1">
+            <li>• "¿En qué categoría gasto más dinero?"</li>
+            <li>• "¿Cuál fue mi mayor gasto este mes?"</li>
+            <li>• "¿Cómo está mi balance financiero?"</li>
+            <li>• "¿Hay algún patrón en mis gastos?"</li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-medium mb-2">Reportes disponibles:</h4>
+          <ul class="space-y-1">
+            <li>
+              • <strong>Resumen General:</strong> Vista completa de tu situación
+            </li>
+            <li>
+              • <strong>Análisis de Gastos:</strong> Desglose detallado de egresos
+            </li>
+            <li>
+              • <strong>Análisis de Ingresos:</strong> Evaluación de entradas
+            </li>
+            <li>• <strong>Por Categorías:</strong> Distribución por tipo</li>
+            <li>• <strong>Tendencias:</strong> Patrones temporales</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Requirements Section -->
+    <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+      <div class="flex items-start">
+        <svg
+          class="w-5 h-5 text-yellow-600 mt-0.5 mr-2"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 15.5c-.77.833.192 2.5 1.732 2.5z"
+          ></path>
+        </svg>
+        <div>
+          <h4 class="text-sm font-medium text-yellow-800">
+            Requisitos del sistema
+          </h4>
+          <p class="text-sm text-yellow-700 mt-1">
+            Para usar Demia, necesitas tener <strong>Ollama</strong> ejecutándose
+            localmente en el puerto 11434 con el modelo <strong>llama3</strong> instalado.
+            <br />
+            Si encuentras errores, verifica que Ollama esté activo ejecutando: <code
+              class="bg-yellow-100 px-1 rounded">ollama serve</code
+            >
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</Layout>

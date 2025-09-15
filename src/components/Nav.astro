@@ -15,17 +15,25 @@ const { pathname } = Astro.url;
       ? "text-indigo-600 px-3 py-2 rounded-md text-sm font-medium flex items-center"
       : "text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium flex items-center"}
   >
-    <AddIcon color="currentColor" sizeX="24" sizeY="24" />
-    <span class="ml-2">Agregar Transacción</span></a
-  >
+    <div class="flex items-center gap-2">
+      <AddIcon color="currentColor" sizeX="24" sizeY="24" />
+      <span class="ml-2">Agregar Transacción</span>
+    </div>
+  </a>
   <a
     href="/dashboard/income"
     class={pathname === "/dashboard/income"
       ? "text-indigo-600 px-3 py-2 rounded-md text-sm font-medium flex items-center"
       : "text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium flex items-center"}
   >
-    <IncomeIcon sizeX="24" sizeY="24" color="currentColor" />
-    <span class="ml-2">Lista de Ingresos</span>
+    <div class="flex items-center gap-2">
+      <IncomeIcon sizeX="24" sizeY="24" color="currentColor" />
+      <span class="ml-2">Lista de Ingresos</span>
+      <span
+        id="incomeCount"
+        class="text-[#f0fdf4] bg-[#16a34a] p-2 w-[20px] h-[20px] rounded-full flex items-center justify-center"
+      ></span>
+    </div>
   </a>
   <a
     href="/dashboard/expenses"
@@ -33,8 +41,14 @@ const { pathname } = Astro.url;
       ? "text-indigo-600 px-3 py-2 rounded-md text-sm font-medium flex items-center"
       : "text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium flex items-center"}
   >
-    <ExpenseIcon sizeX="24" sizeY="24" color="currentColor" />
-    <span class="ml-2">Lista de Gastos</span>
+    <div class="flex items-center gap-2">
+      <ExpenseIcon sizeX="24" sizeY="24" color="currentColor" />
+      <span class="ml-2">Lista de Gastos</span>
+      <span
+        id="expenseCount"
+        class="text-[#fef2f2] bg-[#dc2626] p-2 w-[20px] h-[20px] rounded-full flex items-center justify-center"
+      ></span>
+    </div>
   </a>
   <a
     href="/dashboard/charts"
@@ -42,8 +56,10 @@ const { pathname } = Astro.url;
       ? "text-indigo-600 px-3 py-2 rounded-md text-sm font-medium flex items-center"
       : "text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium flex items-center"}
   >
-    <ChartIcon sizeX="24" sizeY="24" color="currentColor" />
-    <span class="ml-2">Graficos</span>
+    <div class="flex items-center gap-2">
+      <ChartIcon sizeX="24" sizeY="24" color="currentColor" />
+      <span class="ml-2">Graficos</span>
+    </div>
   </a>
   <a
     href="/dashboard/assistant"
@@ -51,7 +67,40 @@ const { pathname } = Astro.url;
       ? "text-indigo-600 px-3 py-2 rounded-md text-sm font-medium flex items-center"
       : "text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium flex items-center"}
   >
-    <AssistantIcon sizeX="24" sizeY="24" color="currentColor" />
-    <span class="ml-2">Asistente IA</span>
+    <div class="flex items-center gap-2">
+      <AssistantIcon sizeX="24" sizeY="24" color="currentColor" />
+      <span class="ml-2">Asistente IA</span>
+    </div>
   </a>
 </nav>
+
+<script>
+  import { getTransactions } from "src/utils/storage";
+  import { getTransactionsToday } from "src/utils/lib";
+  import { EVENT_NAME } from "src/utils/config";
+
+  const getTransactionsTodayCount = () => {
+    const transactions = getTransactions();
+    const transactionsToday = getTransactionsToday(transactions);
+    const expenses =
+      transactionsToday.filter((t) => t.type === "expense") || [];
+    const income = transactionsToday.filter((t) => t.type === "income") || [];
+
+    const incomeCount = document.getElementById("incomeCount");
+    const expenseCount = document.getElementById("expenseCount");
+
+    if (incomeCount) {
+      incomeCount.textContent = income.length.toString();
+    }
+
+    if (expenseCount) {
+      expenseCount.textContent = expenses.length.toString();
+    }
+  };
+
+  window.addEventListener(EVENT_NAME.TRANSACTIONS_UPDATED, () => {
+    getTransactionsTodayCount();
+  });
+
+  getTransactionsTodayCount();
+</script>

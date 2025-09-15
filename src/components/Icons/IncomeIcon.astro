@@ -2,8 +2,10 @@
 const { color, sizeY, sizeX } = Astro.props;
 ---
 
-<svg class={`w-${sizeX} h-${sizeY} text-${color}`} viewBox="0 0 24 24"
-  ><path
-    fill="currentColor"
-    d="M16.175 13H4v-2h12.175l-5.6-5.6L12 4l8 8l-8 8l-1.425-1.4z"></path></svg
->
+<div class={`h-[${sizeY}px] w-[${sizeX}px]`}>
+  <svg class={`text-${color}`} viewBox="0 0 24 24"
+    ><path
+      fill="currentColor"
+      d="M16.175 13H4v-2h12.175l-5.6-5.6L12 4l8 8l-8 8l-1.425-1.4z"></path></svg
+  >
+</div>

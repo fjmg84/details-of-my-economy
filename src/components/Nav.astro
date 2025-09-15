@@ -4,42 +4,54 @@ import ChartIcon from "./Icons/ChartIcon.astro";
 import ExpenseIcon from "./Icons/ExpenseIcon.astro";
 import IncomeIcon from "./Icons/IncomeIcon.astro";
 import AddIcon from "./Icons/AddIcon.astro";
+
+const { pathname } = Astro.url;
 ---
 
 <nav class="hidden md:flex flex-col mt-4">
   <a
     href="/dashboard/"
-    class="text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium flex items-center"
+    class={pathname === "/dashboard/"
+      ? "text-indigo-600 px-3 py-2 rounded-md text-sm font-medium flex items-center"
+      : "text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium flex items-center"}
   >
-    <AddIcon sizeX="4" sizeY="4" color="currentColor" />
+    <AddIcon color="currentColor" sizeX="24" sizeY="24" />
     <span class="ml-2">Agregar Transacción</span></a
   >
   <a
     href="/dashboard/income"
-    class="text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium flex items-center"
+    class={pathname === "/dashboard/income"
+      ? "text-indigo-600 px-3 py-2 rounded-md text-sm font-medium flex items-center"
+      : "text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium flex items-center"}
   >
-    <IncomeIcon sizeX="4" sizeY="4" color="currentColor" />
+    <IncomeIcon sizeX="24" sizeY="24" color="currentColor" />
     <span class="ml-2">Lista de Ingresos</span>
   </a>
   <a
     href="/dashboard/expenses"
-    class="text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium flex items-center"
+    class={pathname === "/dashboard/expenses"
+      ? "text-indigo-600 px-3 py-2 rounded-md text-sm font-medium flex items-center"
+      : "text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium flex items-center"}
   >
-    <ExpenseIcon sizeX="4" sizeY="4" color="currentColor" />
+    <ExpenseIcon sizeX="24" sizeY="24" color="currentColor" />
     <span class="ml-2">Lista de Gastos</span>
   </a>
   <a
     href="/dashboard/charts"
-    class="text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium flex items-center"
+    class={pathname === "/dashboard/charts"
+      ? "text-indigo-600 px-3 py-2 rounded-md text-sm font-medium flex items-center"
+      : "text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium flex items-center"}
   >
-    <ChartIcon sizeX="4" sizeY="4" color="currentColor" />
+    <ChartIcon sizeX="24" sizeY="24" color="currentColor" />
     <span class="ml-2">Graficos</span>
   </a>
   <a
     href="/dashboard/assistant"
-    class="text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium flex items-center"
+    class={pathname === "/dashboard/assistant"
+      ? "text-indigo-600 px-3 py-2 rounded-md text-sm font-medium flex items-center"
+      : "text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium flex items-center"}
   >
-    <AssistantIcon sizeX="4" sizeY="4" color="currentColor" />
+    <AssistantIcon sizeX="24" sizeY="24" color="currentColor" />
     <span class="ml-2">Asistente IA</span>
   </a>
 </nav>

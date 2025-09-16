@@ -3,7 +3,15 @@ const { color, sizeY, sizeX, ...rest } = Astro.props;
 ---
 
 <div class={`h-[${sizeY}px] w-[${sizeX}px]`}>
-  <svg class={`text-${color}`} fill="none" stroke="currentColor" {...rest}>
+  <svg
+    class={`text-${color}`}
+    fill="none"
+    width={sizeX}
+    height={sizeY}
+    stroke="currentColor"
+    viewBox="0 0 24 24"
+    {...rest}
+  >
     <slot />
   </svg>
 </div>

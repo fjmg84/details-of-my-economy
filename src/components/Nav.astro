@@ -63,13 +63,9 @@ const { pathname } = Astro.url;
       ? "text-indigo-600 px-3 py-2 rounded-md text-sm font-medium flex items-center"
       : "text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium flex items-center"}
   >
+    <!-- viewBox="0 0 2048 2048" -->
     <div class="flex items-center gap-2">
-      <IconComponent
-        color="currentColor"
-        sizeX="24"
-        sizeY="24"
-        viewBox="0 0 2048 2048"
-      >
+      <IconComponent color="currentColor" sizeX="24" sizeY="24">
         <ChartIcon />
       </IconComponent>
       <span class="ml-2">Graficos</span>

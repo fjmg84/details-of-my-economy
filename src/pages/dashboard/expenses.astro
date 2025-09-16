@@ -1,8 +1,16 @@
 ---
 import LayoutDashboard from "@layouts/Layout.Dashboard.astro";
 import ExpensesListView from "@components/ListView.astro/ExpensesListView.astro";
+import Section from "@components/share/Section.astro";
+import ExpenseIcon from "@components/Icons/ExpenseIcon.astro";
 ---
 
 <LayoutDashboard>
-  <ExpensesListView />
+  <Section
+    title="Transacciones de Gastos"
+    description="Transacciones de tus gastos"
+  >
+    <ExpenseIcon slot="icon" />
+    <ExpensesListView slot="content" />
+  </Section>
 </LayoutDashboard>

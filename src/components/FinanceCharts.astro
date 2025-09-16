@@ -1,38 +1,39 @@
----
-import Container from "@components/Container.astro";
----
-
 <!-- Charts -->
 <div class="flex flex-col gap-3">
-  <div class="grid grid-rows-3 md:grid-cols-3 gap-3">
-    <div class="row-span-1 flex justify-center items-start">
-      <Container title="Ingresos (Últimos 30 días)">
-        <canvas id="incomeChart"></canvas>
-      </Container>
+  <div class="grid grid-rows-1 md:grid-cols-3 gap-3">
+    <div class="row-span-1 flex justify-center items-start flex-col">
+      <h2 class="text-lg font-semibold text-gray-900">
+        Ingresos (Últimos 30 días)
+      </h2>
+      <canvas id="incomeChart"></canvas>
     </div>
 
-    <div class="row-span-1 flex justify-center items-start">
-      <Container title="Gastos (Últimos 30 días)">
-        <canvas id="expenseChart"></canvas>
-      </Container>
+    <div class="row-span-1 flex justify-center items-start flex-col">
+      <h2 class="text-lg font-semibold text-gray-900">
+        Gastos (Últimos 30 días)
+      </h2>
+      <canvas id="expenseChart"></canvas>
     </div>
 
-    <div class="row-span-1 flex justify-center items-start h-[150px]">
-      <Container title="Ingresos/Gastos (Últimos 30 días)">
-        <canvas id="balanceChart"></canvas>
-      </Container>
+    <div class="row-span-1 flex justify-center items-start flex-col">
+      <h2 class="text-lg font-semibold text-gray-900">
+        Ingresos/Gastos (Últimos 30 días)
+      </h2>
+      <canvas id="balanceChart"></canvas>
     </div>
 
-    <div class="row-span-1 flex justify-center items-start">
-      <Container title="Ingresos por categoría (Últimos 30 días)">
-        <canvas id="categoryIncomeChart"></canvas>
-      </Container>
+    <div class="row-span-1 flex justify-center items-start flex-col">
+      <h2 class="text-lg font-semibold text-gray-900">
+        Ingresos por categoría (Últimos 30 días)
+      </h2>
+      <canvas id="categoryIncomeChart"></canvas>
     </div>
 
-    <div class="row-span-1 flex justify-center items-start">
-      <Container title="Gastos por categoría (Últimos 30 días)">
-        <canvas id="categoryExpenseChart"></canvas>
-      </Container>
+    <div class="row-span-1 flex justify-center items-start flex-col">
+      <h2 class="text-lg font-semibold text-gray-900">
+        Gastos por categoría (Últimos 30 días)
+      </h2>
+      <canvas id="categoryExpenseChart"></canvas>
     </div>
   </div>
 

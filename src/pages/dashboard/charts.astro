@@ -1,8 +1,13 @@
 ---
 import LayoutDashboard from "@layouts/Layout.Dashboard.astro";
 import FinanceCharts from "@components/FinanceCharts.astro";
+import Section from "@components/share/Section.astro";
+import ChartIcon from "@components/Icons/ChartIcon.astro";
 ---
 
 <LayoutDashboard>
-  <FinanceCharts />
+  <Section title="Gráficos" description="Gráficos de tus ingresos y gastos">
+    <ChartIcon slot="icon" />
+    <FinanceCharts slot="content" />
+  </Section>
 </LayoutDashboard>

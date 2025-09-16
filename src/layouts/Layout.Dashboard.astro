@@ -1,7 +1,7 @@
 ---
 import FinanceTotals from "@components/FinanceTotals.astro";
 import PrincipalLayout from "./Layout.astro";
-import Nav from "@components/Nav.astro";
+import Nav from "@components/share/Nav.astro";
 import IconComponent from "@components/Icons/IconComponent.astro";
 import MenuIcon from "@components/Icons/MenuIcon.astro";
 ---
@@ -17,6 +17,16 @@ import MenuIcon from "@components/Icons/MenuIcon.astro";
       </div>
     </div>
 
+    <div class="bg-white col-span-12 md:col-span-5">
+      <header class="hidden md:block sticky top-0 z-10 px-4 py-6">
+        <FinanceTotals />
+      </header>
+      <div class="p-10 overflow-auto h-[calc(100vh-120px)] bg-gray-100">
+        <slot />
+      </div>
+    </div>
+
+    <!-- Mobile Navigation -->
     <div
       id="mobileNav"
       class="md:hidden absolute bg-white z-50 w-full shadow-lg transition-all duration-300 -right-full h-screen p-10"
@@ -38,15 +48,6 @@ import MenuIcon from "@components/Icons/MenuIcon.astro";
           <MenuIcon />
         </IconComponent>
       </button>
-    </div>
-
-    <div class="bg-white col-span-12 md:col-span-5">
-      <header class="hidden md:block sticky top-0 z-10 px-4 py-6">
-        <FinanceTotals />
-      </header>
-      <div class="p-10 overflow-auto h-[calc(100vh-120px)] bg-gray-100">
-        <slot />
-      </div>
     </div>
   </div>
 </PrincipalLayout>

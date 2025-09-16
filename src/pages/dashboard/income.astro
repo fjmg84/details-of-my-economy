@@ -1,8 +1,16 @@
 ---
 import LayoutDashboard from "@layouts/Layout.Dashboard.astro";
 import IncomeListView from "@components/ListView.astro/IncomeListView.astro";
+import Section from "@components/share/Section.astro";
+import IncomeIcon from "@components/Icons/IncomeIcon.astro";
 ---
 
 <LayoutDashboard>
-  <IncomeListView />
+  <Section
+    title="Transacciones de Ingresos"
+    description="Transacciones de tus ingresos"
+  >
+    <IncomeIcon slot="icon" />
+    <IncomeListView slot="content" />
+  </Section>
 </LayoutDashboard>

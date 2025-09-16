@@ -1,15 +1,13 @@
 ---
-import Pagination from "@components/Pagination.astro";
-import Container from "@components/Container.astro";
+import Pagination from "@components/share/Pagination.astro";
 ---
 
-<Container title="Transacciones de Gastos">
-  <div id="transactions">
-    <!-- Transactions will be inserted here by JavaScript -->
-  </div>
+<!-- <Container title="Transacciones de Gastos"> -->
+<div id="transactions">
+  <!-- Transactions will be inserted here by JavaScript -->
+</div>
 
-  <Pagination />
-</Container>
+<Pagination />
 
 <script>
   import { getTransactions } from "src/utils/storage";

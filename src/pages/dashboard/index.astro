@@ -2,21 +2,33 @@
 import DashboardLayout from "@layouts/Layout.Dashboard.astro";
 import FinanceForm from "../../components/FinanceForm.astro";
 import FinanceRecently from "../../components/ListView.astro/RecentlyListView.astro";
+import Section from "@components/share/Section.astro";
+import AddIcon from "@components/Icons/AddIcon.astro";
+import IncomeIcon from "@components/Icons/IncomeIcon.astro";
 ---
 
 <DashboardLayout>
   <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
     <!-- Formulario de transacciones -->
     <div class="md:col-span-1">
-      <div class="bg-white p-6 rounded-lg shadow-md">
-        <h2 class="text-xl font-semibold mb-4">Nueva Transacción</h2>
-        <FinanceForm />
-      </div>
+      <Section
+        title="Nueva Transacción"
+        description="Registra una nueva transacción"
+      >
+        <AddIcon slot="icon" />
+        <FinanceForm slot="content" />
+      </Section>
     </div>
 
     <!-- Lista de transacciones -->
     <div class="md:col-span-2">
-      <FinanceRecently />
+      <Section
+        title="Transacciones Recientes"
+        description="Transacciones de tus ingresos y gastos de nueva entrada"
+      >
+        <IncomeIcon slot="icon" />
+        <FinanceRecently slot="content" />
+      </Section>
     </div>
   </div>
 </DashboardLayout>

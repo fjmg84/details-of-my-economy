@@ -98,15 +98,19 @@ const { pathname } = Astro.url;
       transactionsToday.filter((t) => t.type === "expense") || [];
     const income = transactionsToday.filter((t) => t.type === "income") || [];
 
-    const incomeCount = document.getElementById("incomeCount");
-    const expenseCount = document.getElementById("expenseCount");
+    const incomeCount = document.querySelectorAll("#incomeCount");
+    const expenseCount = document.querySelectorAll("#expenseCount");
 
     if (incomeCount) {
-      incomeCount.textContent = income.length.toString();
+      incomeCount.forEach((count) => {
+        count.textContent = income.length.toString();
+      });
     }
 
     if (expenseCount) {
-      expenseCount.textContent = expenses.length.toString();
+      expenseCount.forEach((count) => {
+        count.textContent = expenses.length.toString();
+      });
     }
   };
 

@@ -3,6 +3,9 @@ import CardColors from "@components/share/CardColors.astro";
 ---
 
 <!-- Summary Cards -->
+<h2 class="text-lg font-semibold text-gray-900 mb-2">
+  Resumen Financiero del Mes
+</h2>
 <div
   style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;"
 >
@@ -43,15 +46,24 @@ import CardColors from "@components/share/CardColors.astro";
   // Update summary cards
   const updateSummary = (transactions: Transaction[]) => {
     const summary = calculateSummary(transactions);
-    const totalIncomeEl = document.getElementById("totalIncome");
-    const totalExpenseEl = document.getElementById("totalExpense");
-    const balanceEl = document.getElementById("balance");
+    const totalIncomeEl = document.querySelectorAll("#totalIncome");
+    const totalExpenseEl = document.querySelectorAll("#totalExpense");
+    const balanceEl = document.querySelectorAll("#balance");
 
     if (totalIncomeEl)
-      totalIncomeEl.textContent = formatCurrency(summary.income);
+      totalIncomeEl.forEach((el) => {
+        el.textContent = formatCurrency(summary.income);
+      });
+
     if (totalExpenseEl)
-      totalExpenseEl.textContent = formatCurrency(summary.expense);
-    if (balanceEl) balanceEl.textContent = formatCurrency(summary.balance);
+      totalExpenseEl.forEach((el) => {
+        el.textContent = formatCurrency(summary.expense);
+      });
+
+    if (balanceEl)
+      balanceEl.forEach((el) => {
+        el.textContent = formatCurrency(summary.balance);
+      });
   };
 
   const today = new Date();

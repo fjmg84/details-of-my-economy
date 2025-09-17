@@ -7,12 +7,13 @@ import AddIcon from "@components/Icons/AddIcon.astro";
 import IconComponent from "@components/Icons/IconComponent.astro";
 
 const { pathname } = Astro.url;
+import { ROUTES } from "@utils/routes";
 ---
 
 <nav class="flex flex-col mt-4">
   <a
-    href="/dashboard/"
-    class={pathname === "/dashboard/"
+    href={ROUTES.DASHBOARD}
+    class={pathname === ROUTES.DASHBOARD
       ? "text-indigo-600 px-3 py-2 rounded-md text-sm font-medium flex items-center"
       : "text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium flex items-center"}
   >
@@ -24,8 +25,8 @@ const { pathname } = Astro.url;
     </div>
   </a>
   <a
-    href="/dashboard/income"
-    class={pathname === "/dashboard/income"
+    href={ROUTES.INGRESOS}
+    class={pathname === ROUTES.INGRESOS
       ? "text-indigo-600 px-3 py-2 rounded-md text-sm font-medium flex items-center"
       : "text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium flex items-center"}
   >
@@ -41,8 +42,8 @@ const { pathname } = Astro.url;
     </div>
   </a>
   <a
-    href="/dashboard/expenses"
-    class={pathname === "/dashboard/expenses"
+    href={ROUTES.GASTOS}
+    class={pathname === ROUTES.GASTOS
       ? "text-indigo-600 px-3 py-2 rounded-md text-sm font-medium flex items-center"
       : "text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium flex items-center"}
   >
@@ -58,8 +59,8 @@ const { pathname } = Astro.url;
     </div>
   </a>
   <a
-    href="/dashboard/charts"
-    class={pathname === "/dashboard/charts"
+    href={ROUTES.GRAFICOS}
+    class={pathname === ROUTES.GRAFICOS
       ? "text-indigo-600 px-3 py-2 rounded-md text-sm font-medium flex items-center"
       : "text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium flex items-center"}
   >
@@ -72,8 +73,8 @@ const { pathname } = Astro.url;
     </div>
   </a>
   <a
-    href="/dashboard/assistant"
-    class={pathname === "/dashboard/assistant"
+    href={ROUTES.ASISTENTE}
+    class={pathname === ROUTES.ASISTENTE
       ? "text-indigo-600 px-3 py-2 rounded-md text-sm font-medium flex items-center"
       : "text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium flex items-center"}
   >

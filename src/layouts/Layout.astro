@@ -22,52 +22,6 @@ import "../styles/global.css";
       <main class="flex-grow">
         <slot />
       </main>
-
-      <!-- <footer class="bg-white border-t border-gray-200 mt-12">
-        <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-          <p class="text-center text-gray-500 text-sm">
-            &copy; {new Date().getFullYear()} Mi Economía. Todos los derechos reservados.
-          </p>
-        </div>
-      </footer> -->
     </div>
-
-    <script>
-      // Wait for DOM to be ready
-      document.addEventListener("DOMContentLoaded", () => {
-        // Mobile menu toggle
-        /*  const mobileMenuButton = document.querySelector("header button");
-        const mobileMenu = document.querySelector("header nav");
-
-        if (mobileMenuButton && mobileMenu) {
-          mobileMenuButton.addEventListener("click", () => {
-            mobileMenu.classList.toggle("hidden");
-            mobileMenu.classList.toggle("flex");
-            mobileMenu.classList.toggle("flex-col");
-            mobileMenu.classList.toggle("absolute");
-            mobileMenu.classList.toggle("right-0");
-            mobileMenu.classList.toggle("top-16");
-            mobileMenu.classList.toggle("bg-white");
-            mobileMenu.classList.toggle("p-4");
-            mobileMenu.classList.toggle("space-y-2");
-            mobileMenu.classList.toggle("space-x-0");
-            mobileMenu.classList.toggle("shadow-lg");
-          });
-        }
-
-        // Transaction event listeners
-        document.addEventListener("transaction:created", () => {
-          window.showSuccess?.("Transacción guardada correctamente");
-        });
-
-        document.addEventListener("transaction:deleted", () => {
-          window.showSuccess?.("Transacción eliminada correctamente");
-        });
-
-        document.addEventListener("transaction:error", () => {
-          window.showError?.("Error al procesar la transacción");
-        }); */
-      });
-    </script>
   </body>
 </html>

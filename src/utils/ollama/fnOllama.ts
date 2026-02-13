@@ -7,6 +7,11 @@ import {
   principalPrompt,
 } from "./configOllama";
 
+export interface ChatMessage {
+  role: "user" | "assistant";
+  content: string;
+}
+
 const createFinancialAnalysisPrompt = (transactions: Transaction[] = []) => {
   const summary = calculateSummary(transactions);
   const transactionsContext =
@@ -25,7 +30,7 @@ ${transactions
     (t) =>
       `- ${formatDate(t.date)}: ${t.description} | ${
         t.type === "income" ? "+" : "-"
-      }${formatCurrency(t.amount)} | Categoría: ${t.category}`
+      }${formatCurrency(t.amount)} | Categoría: ${t.category}`,
   )
   .join("\n")}
 
@@ -48,18 +53,26 @@ ${
 export const callOllamaStream = async (
   message: string,
   includeTransactions: boolean = true,
-  onChunk?: (chunk: string) => void
+  onChunk?: (chunk: string) => void,
+  previousMessages: ChatMessage[] = [],
 ): Promise<string> => {
   const transactions = includeTransactions ? getTransactions() : [];
   const prompt = createFinancialAnalysisPrompt(transactions);
 
   const draft = structuredClone(prompt);
+
+  // Agregar el historial de conversaciones previas
+  previousMessages.forEach((msg) => {
+    draft.push({
+      role: msg.role,
+      content: msg.content,
+    });
+  });
+
   draft.push({
     role: "user",
     content: message,
   });
-
-  console.log(API_URL);
 
   const response = await fetch(API_URL, {
     method: "POST",
@@ -116,25 +129,30 @@ export const callOllamaStream = async (
     reader.releaseLock();
   }
 
+  console.log("Respuesta completa:", fullResponse);
+
   return fullResponse;
 };
 
 // Función específica para generar reportes con streaming
 export const generateFinancialReportStream = async (
   reportType: "summary" | "expenses" | "income" | "categories" | "trends",
-  onChunk?: (chunk: string) => void
+  onChunk?: (chunk: string) => void,
+  previousMessages: ChatMessage[] = [],
 ): Promise<string> => {
   return callOllamaStream(
     generateFinancialReportPrompts[reportType],
     true,
-    onChunk
+    onChunk,
+    previousMessages,
   );
 };
 
 // Función para hacer preguntas específicas sobre transacciones con streaming
 export const askAboutTransactionsStream = async (
   question: string,
-  onChunk?: (chunk: string) => void
+  onChunk?: (chunk: string) => void,
+  previousMessages: ChatMessage[] = [],
 ): Promise<string> => {
-  return callOllamaStream(question, true, onChunk);
+  return callOllamaStream(question, true, onChunk, previousMessages);
 };

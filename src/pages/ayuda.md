@@ -34,7 +34,7 @@ Bienvenido a **Details of My Economy**, tu aplicación personal de gestión fina
 - **Transacciones**: Historial completo de ingresos y gastos
 - **Gráficos**: Análisis visual de tus finanzas
 - **Asistente**: Acceso a Demia, tu asistente financiero
-- **Configuración**: Personaliza la aplicación a tu gusto
+- **Configuración**: Personaliza la aplicación a tu gusto (en desarrollo)
 
 ## 📱 Características Principales
 
@@ -85,7 +85,6 @@ Si no tienes Ollama +3 instalado, puedes descargarlo desde [Ollama](https://olla
 ### Configuración Inicial
 
 1. **Accede al Asistente**
-
    - Navega a la sección "Asistente" en el menú principal
    - Verás la interfaz de chat de Demia
 
@@ -119,12 +118,10 @@ Si no tienes Ollama +3 instalado, puedes descargarlo desde [Ollama](https://olla
 #### Características Avanzadas
 
 1. **Generación de Reportes**
-
    - Pídele a Demia que cree informes personalizados
    - Ejemplo: "Genera un reporte de mis gastos del último trimestre"
 
 2. **Análisis de Tendencias**
-
    - Identifica patrones en tus hábitos de gasto
    - Ejemplo: "¿Ha aumentado mi gasto en transporte este año?"
 
@@ -190,6 +187,6 @@ Para reportar problemas o sugerencias, por favor contacta a fjmgqb@gmail.com
 
 ---
 
-_Última actualización: 16 de septiembre de 2024_
+_Última actualización: 13 de frebrero de 2026_
 
 [Volver al Inicio](/)

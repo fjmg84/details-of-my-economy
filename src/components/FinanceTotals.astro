@@ -1,38 +1,41 @@
----
-import CardColors from "@components/share/CardColors.astro";
----
-
 <!-- Summary Cards -->
-<h2 class="text-lg font-semibold text-gray-900 mb-2">
-  Resumen Financiero del Mes
-</h2>
-<div
-  style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;"
->
-  <CardColors
-    id="totalIncome"
-    defaultValue="$0.00"
-    bgColor="#f0fdf4"
-    borderColor="#dcfce7"
-    textColor="#16a34a"
-    title="Ingresos Totales"
-  />
-  <CardColors
-    id="totalExpense"
-    defaultValue="$0.00"
-    bgColor="#fef2f2"
-    borderColor="#fecaca"
-    textColor="#dc2626"
-    title="Gastos Totales"
-  />
-  <CardColors
-    id="balance"
-    defaultValue="$0.00"
-    bgColor="#eff6ff"
-    borderColor="#bfdbfe"
-    textColor="#2563eb"
-    title="Balance"
-  />
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+  <div class="bg-white rounded-xl border border-gray-200 p-6">
+    <div class="flex items-center gap-3 mb-4">
+      <div class="w-10 h-10 bg-green-100 rounded-lg"></div>
+      <div>
+        <p class="text-sm font-medium text-gray-600">Ingresos Totales</p>
+      </div>
+    </div>
+    <p id="totalIncome" class="text-[28px] font-bold text-gray-900">$0.00</p>
+    <p class="text-xs font-medium text-green-600 mt-2">
+      +12.5% vs mes anterior
+    </p>
+  </div>
+
+  <div class="bg-white rounded-xl border border-gray-200 p-6">
+    <div class="flex items-center gap-3 mb-4">
+      <div class="w-10 h-10 bg-red-100 rounded-lg"></div>
+      <div>
+        <p class="text-sm font-medium text-gray-600">Gastos Totales</p>
+      </div>
+    </div>
+    <p id="totalExpense" class="text-[28px] font-bold text-gray-900">$0.00</p>
+    <p class="text-xs font-medium text-red-600 mt-2">+8.2% vs mes anterior</p>
+  </div>
+
+  <div class="bg-white rounded-xl border border-gray-200 p-6">
+    <div class="flex items-center gap-3 mb-4">
+      <div class="w-10 h-10 bg-blue-100 rounded-lg"></div>
+      <div>
+        <p class="text-sm font-medium text-gray-600">Balance Neto</p>
+      </div>
+    </div>
+    <p id="balance" class="text-[28px] font-bold text-gray-900">$0.00</p>
+    <p class="text-xs font-medium text-green-600 mt-2">
+      +22.4% vs mes anterior
+    </p>
+  </div>
 </div>
 
 <script>

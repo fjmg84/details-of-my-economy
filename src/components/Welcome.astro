@@ -1,99 +1,63 @@
 ---
 import { ROUTES } from "@utils/routes";
-import IconComponent from "./Icons/IconComponent.astro";
-import DocumentIcon from "./Icons/DocumentIcon.astro";
 ---
 
-<div
-  class="relative min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-gray-50 to-gray-100"
->
-  <main
-    class="relative z-10 max-w-4xl w-full space-y-12 flex flex-col items-center justify-center"
-  >
-    <section class="text-center space-y-8">
-      <h1 class="text-4xl font-bold text-gray-900 mb-6">
-        Bienvenido a <span class="text-indigo-600">Tu Economía</span>
-      </h1>
-
-      <p class="text-xl text-gray-600 max-w-2xl mx-auto">
-        Controla tus finanzas personales de manera sencilla y efectiva. Empieza
-        a registrar tus ingresos y gastos hoy mismo.
-      </p>
-
-      <div class="flex flex-col sm:flex-row justify-center gap-4 pt-4">
+<div class="min-h-screen bg-white">
+  <!-- Navigation -->
+  <nav class="border-b border-gray-200">
+    <div class="max-w-7xl mx-auto px-20 py-6">
+      <div class="flex justify-between items-center">
+        <div class="flex items-center gap-3">
+          <div class="w-11 h-11 bg-blue-600 rounded-lg"></div>
+          <span class="text-[22px] font-bold text-gray-900">Mi Economía</span>
+        </div>
         <a
           href={ROUTES.DASHBOARD}
-          class="btn btn-primary inline-flex items-center justify-center px-6 py-3 text-lg font-medium"
+          class="bg-blue-600 text-white px-8 py-3 rounded-lg text-base font-semibold hover:bg-blue-700 transition-colors"
         >
-          Ir al Dashboard
-        </a>
-
-        <a
-          href={ROUTES.DOCUMENTACION}
-          class="btn bg-white text-gray-700 border border-gray-300 hover:bg-gray-50 inline-flex items-center justify-center px-6 py-3 text-lg font-medium"
-        >
-          <span>Documentación</span>
-          <IconComponent color="gray-700" sizeX={20} sizeY={20}>
-            <DocumentIcon />
-          </IconComponent>
+          Comenzar
         </a>
       </div>
-    </section>
+    </div>
+  </nav>
 
-    <div class="grid md:grid-cols-2 gap-6 mt-12">
-      <div
-        class="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow"
+  <!-- Hero Section -->
+  <main class="max-w-7xl mx-auto px-20 py-24">
+    <div
+      class="flex flex-col items-center justify-center text-center space-y-10"
+    >
+      <h1
+        class="text-[56px] font-extrabold text-gray-900 leading-tight max-w-4xl"
       >
-        <div class="flex items-center mb-4">
-          <div class="p-2 bg-indigo-100 rounded-lg mr-4">
-            <svg
-              class="w-8 h-8 text-indigo-600"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-            </svg>
-          </div>
-          <h3 class="text-xl font-semibold text-gray-900">Rápido y Fácil</h3>
-        </div>
-        <p class="text-gray-600">
-          Registra tus transacciones en segundos con nuestra interfaz intuitiva
-          y fácil de usar.
-        </p>
-      </div>
+        Gestiona tus finanzas<br />de forma inteligente
+      </h1>
 
-      <div
-        class="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow"
-      >
-        <div class="flex items-center mb-4">
-          <div class="p-2 bg-green-100 rounded-lg mr-4">
-            <svg
-              class="w-8 h-8 text-green-600"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
-              ></path>
-            </svg>
-          </div>
-          <h3 class="text-xl font-semibold text-gray-900">
-            Estadísticas Detalladas
-          </h3>
+      <p class="text-xl text-gray-600 max-w-3xl">
+        Controla tus ingresos y gastos, visualiza tendencias y toma decisiones
+        financieras informadas
+      </p>
+
+      <!-- Features -->
+      <div class="flex gap-12 mt-8">
+        <div class="flex flex-col items-center gap-4 max-w-[280px]">
+          <div class="w-16 h-16 bg-green-100 rounded-2xl"></div>
+          <h3 class="text-lg font-bold text-gray-900">Registro Rápido</h3>
+          <p class="text-sm text-gray-600">Añade transacciones en segundos</p>
         </div>
-        <p class="text-gray-600">
-          Visualiza tus hábitos de gasto con gráficos detallados y análisis
-          mensuales.
-        </p>
+
+        <div class="flex flex-col items-center gap-4 max-w-[280px]">
+          <div class="w-16 h-16 bg-blue-100 rounded-2xl"></div>
+          <h3 class="text-lg font-bold text-gray-900">Gráficos Visuales</h3>
+          <p class="text-sm text-gray-600">Visualiza tus finanzas claramente</p>
+        </div>
+
+        <div class="flex flex-col items-center gap-4 max-w-[280px]">
+          <div class="w-16 h-16 bg-pink-100 rounded-2xl"></div>
+          <h3 class="text-lg font-bold text-gray-900">Asistente IA</h3>
+          <p class="text-sm text-gray-600">
+            Consejos inteligentes personalizados
+          </p>
+        </div>
       </div>
     </div>
   </main>
@@ -111,8 +75,9 @@ import DocumentIcon from "./Icons/DocumentIcon.astro";
   }
 
   #container {
-    font-family: Inter, Roboto, "Helvetica Neue", "Arial Nova", "Nimbus Sans",
-      Arial, sans-serif;
+    font-family:
+      Inter, Roboto, "Helvetica Neue", "Arial Nova", "Nimbus Sans", Arial,
+      sans-serif;
     height: 100%;
   }
 
@@ -173,8 +138,9 @@ import DocumentIcon from "./Icons/DocumentIcon.astro";
   }
 
   pre {
-    font-family: ui-monospace, "Cascadia Code", "Source Code Pro", Menlo,
-      Consolas, "DejaVu Sans Mono", monospace;
+    font-family:
+      ui-monospace, "Cascadia Code", "Source Code Pro", Menlo, Consolas,
+      "DejaVu Sans Mono", monospace;
     font-weight: normal;
     background: linear-gradient(14deg, #d83333 0%, #f041ff 100%);
     -webkit-background-clip: text;

@@ -10,80 +10,62 @@ const { pathname } = Astro.url;
 import { ROUTES } from "@utils/routes";
 ---
 
-<nav class="flex flex-col mt-4">
+<nav class="flex flex-col gap-2">
   <a
     href={ROUTES.DASHBOARD}
     class={pathname === ROUTES.DASHBOARD
-      ? "text-indigo-600 px-3 py-2 rounded-md text-sm font-medium flex items-center"
-      : "text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium flex items-center"}
+      ? "flex items-center gap-3 px-4 py-3 rounded-lg bg-blue-50 text-blue-900 font-semibold transition-colors"
+      : "flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-gray-100 font-medium transition-colors"}
   >
-    <div class="flex items-center gap-2">
-      <IconComponent color="currentColor" sizeX="24" sizeY="24">
-        <AddIcon />
-      </IconComponent>
-      <span class="ml-2">Agregar Transacción</span>
-    </div>
+    <IconComponent color="currentColor" sizeX="20" sizeY="20">
+      <AddIcon />asdasd
+    </IconComponent>
+
+    <span class="text-sm">Dashboard</span>
   </a>
   <a
     href={ROUTES.INGRESOS}
     class={pathname === ROUTES.INGRESOS
-      ? "text-indigo-600 px-3 py-2 rounded-md text-sm font-medium flex items-center"
-      : "text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium flex items-center"}
+      ? "flex items-center gap-3 px-4 py-3 rounded-lg bg-blue-50 text-blue-900 font-semibold transition-colors"
+      : "flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-gray-100 font-medium transition-colors"}
   >
-    <div class="flex items-center gap-2">
-      <IconComponent color="currentColor" sizeX="24" sizeY="24">
-        <IncomeIcon />
-      </IconComponent>
-      <span class="ml-2">Lista de Ingresos</span>
-      <span
-        id="incomeCount"
-        class="text-[#f0fdf4] bg-[#16a34a] p-2 w-[20px] h-[20px] rounded-full flex items-center justify-center"
-      ></span>
-    </div>
+    <IconComponent color="currentColor" sizeX="20" sizeY="20">
+      <IncomeIcon />
+    </IconComponent>
+    <span class="text-sm">Ingresos</span>
   </a>
   <a
     href={ROUTES.GASTOS}
     class={pathname === ROUTES.GASTOS
-      ? "text-indigo-600 px-3 py-2 rounded-md text-sm font-medium flex items-center"
-      : "text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium flex items-center"}
+      ? "flex items-center gap-3 px-4 py-3 rounded-lg bg-blue-50 text-blue-900 font-semibold transition-colors"
+      : "flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-gray-100 font-medium transition-colors"}
   >
-    <div class="flex items-center gap-2">
-      <IconComponent color="currentColor" sizeX="24" sizeY="24">
-        <ExpenseIcon />
-      </IconComponent>
-      <span class="ml-2">Lista de Gastos</span>
-      <span
-        id="expenseCount"
-        class="text-[#fef2f2] bg-[#dc2626] p-2 w-[20px] h-[20px] rounded-full flex items-center justify-center"
-      ></span>
-    </div>
+    <IconComponent color="currentColor" sizeX="20" sizeY="20">
+      <ExpenseIcon />
+    </IconComponent>
+    <span class="text-sm">Gastos</span>
   </a>
   <a
     href={ROUTES.GRAFICOS}
     class={pathname === ROUTES.GRAFICOS
-      ? "text-indigo-600 px-3 py-2 rounded-md text-sm font-medium flex items-center"
-      : "text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium flex items-center"}
+      ? "flex items-center gap-3 px-4 py-3 rounded-lg bg-blue-50 text-blue-900 font-semibold transition-colors"
+      : "flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-gray-100 font-medium transition-colors"}
   >
-    <!-- viewBox="0 0 2048 2048" -->
-    <div class="flex items-center gap-2">
-      <IconComponent color="currentColor" sizeX="24" sizeY="24">
-        <ChartIcon />
-      </IconComponent>
-      <span class="ml-2">Graficos</span>
-    </div>
+    <IconComponent color="currentColor" sizeX="20" sizeY="20">
+      <ChartIcon />
+    </IconComponent>
+    <span class="text-sm">Gráficos</span>
   </a>
   <a
     href={ROUTES.ASISTENTE}
     class={pathname === ROUTES.ASISTENTE
-      ? "text-indigo-600 px-3 py-2 rounded-md text-sm font-medium flex items-center"
-      : "text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium flex items-center"}
+      ? "flex items-center gap-3 px-4 py-3 rounded-lg bg-blue-50 text-blue-900 font-semibold transition-colors"
+      : "flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-gray-100 font-medium transition-colors"}
   >
-    <div class="flex items-center gap-2">
-      <IconComponent color="currentColor" sizeX="24" sizeY="24">
-        <AssistantIcon />
-      </IconComponent>
-      <span class="ml-2">Asistente IA</span>
-    </div>
+    <IconComponent color="currentColor" sizeX="20" sizeY="20">
+      <AssistantIcon />
+    </IconComponent>
+    <span class="text-sm">Asistente</span>
   </a>
 </nav>
 

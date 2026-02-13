@@ -1,16 +1,29 @@
 ---
 import LayoutDashboard from "@layouts/Layout.Dashboard.astro";
 import ExpensesListView from "@components/ListView.astro/ExpensesListView.astro";
-import Section from "@components/share/Section.astro";
-import ExpenseIcon from "@components/Icons/ExpenseIcon.astro";
+import FinanceTotals from "@components/FinanceTotals.astro";
 ---
 
 <LayoutDashboard>
-  <Section
-    title="Transacciones de Gastos"
-    description="Transacciones de tus gastos"
-  >
-    <ExpenseIcon slot="icon" />
-    <ExpensesListView slot="content" />
-  </Section>
+  <div class="p-10">
+    <!-- Header -->
+    <div class="mb-8">
+      <h1 class="text-[32px] font-bold text-gray-900">
+        Transacciones de Gastos
+      </h1>
+      <p class="text-base text-gray-600 mt-2">
+        Listado completo de tus transacciones de gastos
+      </p>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="mb-8">
+      <FinanceTotals />
+    </div>
+
+    <!-- Table Container -->
+    <div class="bg-white rounded-xl border border-gray-200">
+      <ExpensesListView />
+    </div>
+  </div>
 </LayoutDashboard>

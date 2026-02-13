@@ -2,33 +2,47 @@
 import DashboardLayout from "@layouts/Layout.Dashboard.astro";
 import FinanceForm from "../../components/FinanceForm.astro";
 import FinanceRecently from "../../components/ListView.astro/RecentlyListView.astro";
-import Section from "@components/share/Section.astro";
-import AddIcon from "@components/Icons/AddIcon.astro";
-import IncomeIcon from "@components/Icons/IncomeIcon.astro";
 ---
 
 <DashboardLayout>
-  <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-    <!-- Formulario de transacciones -->
-    <div class="md:col-span-1">
-      <Section
-        title="Nueva Transacción"
-        description="Registra una nueva transacción"
-      >
-        <AddIcon slot="icon" />
-        <FinanceForm slot="content" />
-      </Section>
+  <div class="p-10">
+    <!-- Header -->
+    <div class="mb-8">
+      <h1 class="text-[32px] font-bold text-gray-900">Dashboard</h1>
+      <p class="text-base text-gray-600 mt-2">
+        Resumen de tu actividad financiera
+      </p>
     </div>
 
-    <!-- Lista de transacciones -->
-    <div class="md:col-span-2">
-      <Section
-        title="Transacciones Recientes"
-        description="Transacciones de tus ingresos y gastos de nueva entrada"
-      >
-        <IncomeIcon slot="icon" />
-        <FinanceRecently slot="content" />
-      </Section>
+    <!-- Main Content -->
+    <div class="flex gap-6">
+      <!-- Form Section -->
+      <div class="w-[380px] flex-shrink-0">
+        <div class="bg-white rounded-xl border border-gray-200 p-6">
+          <div class="mb-6">
+            <h2 class="text-xl font-bold text-gray-900">Nueva Transacción</h2>
+            <p class="text-sm text-gray-600 mt-1">
+              Registra una nueva transacción
+            </p>
+          </div>
+          <FinanceForm />
+        </div>
+      </div>
+
+      <!-- Recent Transactions -->
+      <div class="flex-1">
+        <div class="bg-white rounded-xl border border-gray-200 p-6">
+          <div class="mb-6">
+            <h2 class="text-xl font-bold text-gray-900">
+              Transacciones Recientes
+            </h2>
+            <p class="text-sm text-gray-600 mt-1">
+              Transacciones de tus ingresos y gastos
+            </p>
+          </div>
+          <FinanceRecently />
+        </div>
+      </div>
     </div>
   </div>
 </DashboardLayout>

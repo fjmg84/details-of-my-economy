@@ -1,6 +1,7 @@
 ---
 import LayoutDashboard from "@layouts/Layout.Dashboard.astro";
 import FinanceCharts from "@components/FinanceCharts.astro";
+import Box from "@components/share/Box.astro";
 ---
 
 <LayoutDashboard>
@@ -14,56 +15,8 @@ import FinanceCharts from "@components/FinanceCharts.astro";
     </div>
 
     <!-- Charts Grid -->
-    <div class="space-y-6">
-      <!-- First Row -->
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 h-[380px]">
-        <div class="bg-white rounded-xl border border-gray-200 p-6">
-          <div class="mb-5">
-            <h2 class="text-lg font-bold text-gray-900">Tendencia Mensual</h2>
-            <p class="text-[13px] text-gray-600 mt-1">
-              Comparación de ingresos vs gastos
-            </p>
-          </div>
-          <div
-            class="h-[calc(100%-80px)] bg-slate-50 rounded-lg flex items-center justify-center"
-          >
-            <div class="text-center">
-              <div class="w-16 h-16 bg-gray-200 rounded-xl mx-auto mb-3"></div>
-              <p class="text-sm font-medium text-gray-400">Gráfico de líneas</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="bg-white rounded-xl border border-gray-200 p-6">
-          <div class="mb-5">
-            <h2 class="text-lg font-bold text-gray-900">
-              Distribución por Categoría
-            </h2>
-            <p class="text-[13px] text-gray-600 mt-1">Gastos por categoría</p>
-          </div>
-          <div
-            class="h-[calc(100%-80px)] bg-slate-50 rounded-lg flex items-center justify-center"
-          >
-            <div class="text-center">
-              <div class="w-16 h-16 bg-gray-200 rounded-xl mx-auto mb-3"></div>
-              <p class="text-sm font-medium text-gray-400">Gráfico circular</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Second Row -->
-      <div class="h-full">
-        <div class="bg-white rounded-xl border border-gray-200 p-6 h-full">
-          <div class="mb-5">
-            <h2 class="text-lg font-bold text-gray-900">Comparación Anual</h2>
-            <p class="text-[13px] text-gray-600 mt-1">Evolución mes a mes</p>
-          </div>
-          <div class="h-[calc(100%-80px)]">
-            <FinanceCharts />
-          </div>
-        </div>
-      </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+      <FinanceCharts />
     </div>
   </div>
 </LayoutDashboard>

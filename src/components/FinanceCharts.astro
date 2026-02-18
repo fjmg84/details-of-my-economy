@@ -1,274 +1,336 @@
+---
+import Box from "./share/Box.astro";
+---
+
 <!-- Charts -->
-<div class="flex flex-col gap-3">
-  <div class="grid grid-rows-1 md:grid-cols-3 gap-3">
-    <div class="row-span-1 flex justify-center items-start flex-col">
-      <h2 class="text-lg font-semibold text-gray-900">
-        Ingresos (Últimos 30 días)
-      </h2>
-      <canvas id="incomeChart"></canvas>
-    </div>
+<Box title="Tendencia Mensual">
+  <p class="text-[13px] text-gray-600 mt-1">
+    Comparación de ingresos vs gastos
+  </p>
+  <canvas id="tendenciaMensualChart"></canvas>
+</Box>
 
-    <div class="row-span-1 flex justify-center items-start flex-col">
-      <h2 class="text-lg font-semibold text-gray-900">
-        Gastos (Últimos 30 días)
-      </h2>
-      <canvas id="expenseChart"></canvas>
-    </div>
+<Box title="Ingresos (Últimos 30 días)">
+  <canvas id="incomeChart"></canvas>
+</Box>
 
-    <div class="row-span-1 flex justify-center items-start flex-col">
-      <h2 class="text-lg font-semibold text-gray-900">
-        Ingresos/Gastos (Últimos 30 días)
-      </h2>
-      <canvas id="balanceChart"></canvas>
-    </div>
+<Box title="Gastos (Últimos 30 días)">
+  <canvas id="expenseChart"></canvas>
+</Box>
 
-    <div class="row-span-1 flex justify-center items-start flex-col">
-      <h2 class="text-lg font-semibold text-gray-900">
-        Ingresos por categoría (Últimos 30 días)
-      </h2>
-      <canvas id="categoryIncomeChart"></canvas>
-    </div>
-
-    <div class="row-span-1 flex justify-center items-start flex-col">
-      <h2 class="text-lg font-semibold text-gray-900">
-        Gastos por categoría (Últimos 30 días)
-      </h2>
-      <canvas id="categoryExpenseChart"></canvas>
-    </div>
+<Box title="Ingresos/Gastos (Últimos 30 días)">
+  <div class="max-w-[300px] max-h-[300px]">
+    <canvas id="balanceChart"></canvas>
   </div>
+</Box>
 
-  <script>
-    import type { Chart } from "chart.js";
-    import { generateChart } from "src/utils/chart";
-    import { filterTransactionsByDateRange } from "src/utils/lib";
-    import { getTransactions } from "src/utils/storage";
+<Box title="Ingresos por categoría (Últimos 30 días)">
+  <canvas id="categoryIncomeChart"></canvas>
+</Box>
 
-    // At the top of your script section
-    const chartRefs = {
-      income: { current: null as Chart | null },
-      expense: { current: null as Chart | null },
-      balance: { current: null as Chart | null },
-      categoryExpense: { current: null as Chart | null },
-      categoryIncome: { current: null as Chart | null },
-    };
-    const transactions = getTransactions();
-    const expense = transactions.filter((t) => t.type === "expense");
-    const income = transactions.filter((t) => t.type === "income");
-    const incomeFiltered = filterTransactionsByDateRange(income, 30);
+<Box title="Gastos por categoría (Últimos 30 días)">
+  <canvas id="categoryExpenseChart"></canvas>
+</Box>
+
+<script>
+  import type { Chart } from "chart.js";
+  import { generateChart } from "src/utils/chart";
+  import { filterTransactionsByDateRange } from "src/utils/lib";
+  import { getTransactions } from "src/utils/storage";
+
+  // At the top of your script section
+  const chartRefs = {
+    income: { current: null as Chart | null },
+    expense: { current: null as Chart | null },
+    balance: { current: null as Chart | null },
+    categoryExpense: { current: null as Chart | null },
+    categoryIncome: { current: null as Chart | null },
+    monthlyTrend: { current: null as Chart | null },
+  };
+  const transactions = getTransactions();
+  const expense = transactions.filter((t) => t.type === "expense");
+  const income = transactions.filter((t) => t.type === "income");
+  const incomeFiltered = filterTransactionsByDateRange(income, 30);
+  const expenseFiltered = filterTransactionsByDateRange(expense, 30);
+
+  function generateIncomeChart() {
+    generateChart({
+      chartRef: chartRefs.income,
+      labels: incomeFiltered.map((t) => new Date(t.date).toLocaleDateString()),
+      datasets: [
+        {
+          data: incomeFiltered.map((t) => Number(t.amount)),
+          label: "Ingresos",
+        },
+      ],
+      type: "bar",
+      elementId: "incomeChart",
+      options: {
+        backgroundColor: "#16a34a80",
+        plugins: {
+          tooltip: {
+            callbacks: {
+              label: (context) => {
+                const value = context.formattedValue || null;
+
+                if (value !== null) {
+                  return new Intl.NumberFormat("en-US", {
+                    style: "currency",
+                    currency: "USD",
+                  }).format(Number(value));
+                }
+                return "";
+              },
+            },
+          },
+        },
+      },
+    });
+  }
+
+  function generateExpenseChart() {
     const expenseFiltered = filterTransactionsByDateRange(expense, 30);
 
-    function generateIncomeChart() {
-      generateChart({
-        chartRef: chartRefs.income,
-        labels: incomeFiltered.map((t) =>
-          new Date(t.date).toLocaleDateString()
-        ),
-        datasets: [
-          {
-            data: incomeFiltered.map((t) => Number(t.amount)),
-            label: "Ingresos",
-          },
-        ],
-        type: "bar",
-        elementId: "incomeChart",
-        options: {
-          backgroundColor: "#16a34a80",
-          plugins: {
-            tooltip: {
-              callbacks: {
-                label: (context) => {
-                  const value = context.formattedValue || null;
-
-                  if (value !== null) {
-                    return new Intl.NumberFormat("en-US", {
-                      style: "currency",
-                      currency: "USD",
-                    }).format(Number(value));
-                  }
-                  return "";
-                },
+    generateChart({
+      chartRef: chartRefs.expense,
+      labels: expenseFiltered.map((t) => new Date(t.date).toLocaleDateString()),
+      datasets: [
+        {
+          data: expenseFiltered.map((t) => Number(t.amount)),
+          label: "Gastos",
+        },
+      ],
+      type: "bar",
+      elementId: "expenseChart",
+      options: {
+        backgroundColor: "#ef444480",
+        plugins: {
+          tooltip: {
+            callbacks: {
+              label: (context) => {
+                if (context.formattedValue !== null) {
+                  return new Intl.NumberFormat("en-US", {
+                    style: "currency",
+                    currency: "USD",
+                  }).format(Number(context.formattedValue));
+                }
+                return "";
               },
             },
           },
         },
-      });
-    }
-
-    function generateExpenseChart() {
-      const expenseFiltered = filterTransactionsByDateRange(expense, 30);
-
-      generateChart({
-        chartRef: chartRefs.expense,
-        labels: expenseFiltered.map((t) =>
-          new Date(t.date).toLocaleDateString()
-        ),
-        datasets: [
-          {
-            data: expenseFiltered.map((t) => Number(t.amount)),
-            label: "Gastos",
-          },
-        ],
-        type: "bar",
-        elementId: "expenseChart",
-        options: {
-          backgroundColor: "#ef444480",
-          plugins: {
-            tooltip: {
-              callbacks: {
-                label: (context) => {
-                  if (context.formattedValue !== null) {
-                    return new Intl.NumberFormat("en-US", {
-                      style: "currency",
-                      currency: "USD",
-                    }).format(Number(context.formattedValue));
-                  }
-                  return "";
-                },
-              },
-            },
-          },
-        },
-      });
-    }
-
-    function generateCategoryExpenseChart() {
-      const expenseFiltered = filterTransactionsByDateRange(expense, 30);
-      const expenseGrouped = expenseFiltered.reduce(
-        (acc, t) => {
-          if (!acc[t.category]) {
-            acc[t.category] = 0;
-          }
-          acc[t.category] += Number(t.amount);
-          return acc;
-        },
-        {} as Record<string, number>
-      );
-
-      generateChart({
-        chartRef: chartRefs.categoryExpense,
-        labels: Object.keys(expenseGrouped),
-        datasets: [
-          {
-            data: Object.values(expenseGrouped),
-            label: "Gastos",
-          },
-        ],
-        type: "bar",
-        elementId: "categoryExpenseChart",
-        options: {
-          backgroundColor: "#ef444480",
-          plugins: {
-            tooltip: {
-              callbacks: {
-                label: (context) => {
-                  if (context.formattedValue !== null) {
-                    return new Intl.NumberFormat("en-US", {
-                      style: "currency",
-                      currency: "USD",
-                    }).format(Number(context.formattedValue));
-                  }
-                  return "";
-                },
-              },
-            },
-          },
-        },
-      });
-    }
-
-    function generateCategoryIncomeChart() {
-      const incomeFiltered = filterTransactionsByDateRange(income, 30);
-      const incomeGrouped = incomeFiltered.reduce(
-        (acc, t) => {
-          if (!acc[t.category]) {
-            acc[t.category] = 0;
-          }
-          acc[t.category] += Number(t.amount);
-          return acc;
-        },
-        {} as Record<string, number>
-      );
-
-      generateChart({
-        chartRef: chartRefs.categoryIncome,
-        labels: Object.keys(incomeGrouped),
-        datasets: [
-          {
-            data: Object.values(incomeGrouped),
-            label: "Ingresos",
-          },
-        ],
-        type: "bar",
-        elementId: "categoryIncomeChart",
-        options: {
-          backgroundColor: "#16a34a80",
-          plugins: {
-            tooltip: {
-              callbacks: {
-                label: (context) => {
-                  if (context.formattedValue !== null) {
-                    return new Intl.NumberFormat("en-US", {
-                      style: "currency",
-                      currency: "USD",
-                    }).format(Number(context.formattedValue));
-                  }
-                  return "";
-                },
-              },
-            },
-          },
-        },
-      });
-    }
-
-    function generateBalanceChart() {
-      const incomeBalance = incomeFiltered.reduce(
-        (acc, t) => acc + t.amount,
-        0
-      );
-      const expenseBalance = expenseFiltered.reduce(
-        (acc, t) => acc + t.amount,
-        0
-      );
-
-      generateChart({
-        chartRef: chartRefs.balance,
-        labels: ["Ingresos", "Gastos"],
-        datasets: [
-          {
-            data: [incomeBalance, expenseBalance],
-            label: "Balance",
-          },
-        ],
-        type: "doughnut",
-        elementId: "balanceChart",
-        options: {
-          backgroundColor: ["#16a34a80", "#ef444480"],
-          plugins: {
-            tooltip: {
-              callbacks: {
-                label: (context) => {
-                  if (context.formattedValue !== null) {
-                    return new Intl.NumberFormat("en-US", {
-                      style: "currency",
-                      currency: "USD",
-                    }).format(Number(context.formattedValue));
-                  }
-                  return "";
-                },
-              },
-            },
-          },
-        },
-      });
-    }
-
-    window.addEventListener("load", () => {
-      generateIncomeChart();
-      generateExpenseChart();
-      generateBalanceChart();
-      generateCategoryExpenseChart();
-      generateCategoryIncomeChart();
+      },
     });
-  </script>
-</div>
+  }
+
+  function generateCategoryExpenseChart() {
+    const expenseFiltered = filterTransactionsByDateRange(expense, 30);
+    const expenseGrouped = expenseFiltered.reduce(
+      (acc, t) => {
+        if (!acc[t.category]) {
+          acc[t.category] = 0;
+        }
+        acc[t.category] += Number(t.amount);
+        return acc;
+      },
+      {} as Record<string, number>,
+    );
+
+    generateChart({
+      chartRef: chartRefs.categoryExpense,
+      labels: Object.keys(expenseGrouped),
+      datasets: [
+        {
+          data: Object.values(expenseGrouped),
+          label: "Gastos",
+        },
+      ],
+      type: "bar",
+      elementId: "categoryExpenseChart",
+      options: {
+        backgroundColor: "#ef444480",
+        plugins: {
+          tooltip: {
+            callbacks: {
+              label: (context) => {
+                if (context.formattedValue !== null) {
+                  return new Intl.NumberFormat("en-US", {
+                    style: "currency",
+                    currency: "USD",
+                  }).format(Number(context.formattedValue));
+                }
+                return "";
+              },
+            },
+          },
+        },
+      },
+    });
+  }
+
+  function generateCategoryIncomeChart() {
+    const incomeFiltered = filterTransactionsByDateRange(income, 30);
+    const incomeGrouped = incomeFiltered.reduce(
+      (acc, t) => {
+        if (!acc[t.category]) {
+          acc[t.category] = 0;
+        }
+        acc[t.category] += Number(t.amount);
+        return acc;
+      },
+      {} as Record<string, number>,
+    );
+
+    generateChart({
+      chartRef: chartRefs.categoryIncome,
+      labels: Object.keys(incomeGrouped),
+      datasets: [
+        {
+          data: Object.values(incomeGrouped),
+          label: "Ingresos",
+        },
+      ],
+      type: "bar",
+      elementId: "categoryIncomeChart",
+      options: {
+        backgroundColor: "#16a34a80",
+        plugins: {
+          tooltip: {
+            callbacks: {
+              label: (context) => {
+                if (context.formattedValue !== null) {
+                  return new Intl.NumberFormat("en-US", {
+                    style: "currency",
+                    currency: "USD",
+                  }).format(Number(context.formattedValue));
+                }
+                return "";
+              },
+            },
+          },
+        },
+      },
+    });
+  }
+
+  function generateBalanceChart() {
+    const incomeBalance = incomeFiltered.reduce((acc, t) => acc + t.amount, 0);
+    const expenseBalance = expenseFiltered.reduce(
+      (acc, t) => acc + t.amount,
+      0,
+    );
+
+    generateChart({
+      chartRef: chartRefs.balance,
+      labels: ["Ingresos", "Gastos"],
+      datasets: [
+        {
+          data: [incomeBalance, expenseBalance],
+          label: "Balance",
+        },
+      ],
+      type: "doughnut",
+      elementId: "balanceChart",
+      options: {
+        backgroundColor: ["#16a34a80", "#ef444480"],
+        plugins: {
+          tooltip: {
+            callbacks: {
+              label: (context) => {
+                if (context.formattedValue !== null) {
+                  return new Intl.NumberFormat("en-US", {
+                    style: "currency",
+                    currency: "USD",
+                  }).format(Number(context.formattedValue));
+                }
+                return "";
+              },
+            },
+          },
+        },
+      },
+    });
+  }
+
+  function generateMonthlyTrendChart() {
+    const incomeByMonth = Array(12).fill(0);
+    const expenseByMonth = Array(12).fill(0);
+
+    income.forEach((t) => {
+      const date = new Date(t.date);
+      const month = date.getMonth();
+      incomeByMonth[month] += Number(t.amount);
+    });
+
+    expense.forEach((t) => {
+      const date = new Date(t.date);
+      const month = date.getMonth();
+      expenseByMonth[month] += Number(t.amount);
+    });
+
+    generateChart({
+      chartRef: chartRefs.monthlyTrend,
+      labels: [
+        "Enero",
+        "Febrero",
+        "Marzo",
+        "Abril",
+        "Mayo",
+        "Junio",
+        "Julio",
+        "Agosto",
+        "Septiembre",
+        "Octubre",
+        "Noviembre",
+        "Diciembre",
+      ],
+      datasets: [
+        {
+          label: "Ingresos",
+          data: incomeByMonth.map((value, index) => ({ x: index, y: value })),
+          backgroundColor: "#16a34a80",
+        },
+
+        {
+          label: "Gastos",
+          data: expenseByMonth.map((value, index) => ({
+            x: index,
+            y: value,
+          })),
+          backgroundColor: "#ef444480",
+        },
+      ],
+      type: "bar",
+      elementId: "tendenciaMensualChart",
+      options: {
+        backgroundColor: ["#16a34a80", "#ef444480"],
+        plugins: {
+          tooltip: {
+            callbacks: {
+              label: (context: Record<string, any>) => {
+                if (context.raw?.y) {
+                  const amount = Number(context.raw?.y);
+
+                  return new Intl.NumberFormat("en-US", {
+                    style: "currency",
+                    currency: "USD",
+                  }).format(amount);
+                }
+                return "";
+              },
+            },
+          },
+        },
+      },
+    });
+  }
+
+  window.addEventListener("load", () => {
+    generateIncomeChart();
+    generateExpenseChart();
+    generateBalanceChart();
+    generateCategoryExpenseChart();
+    generateCategoryIncomeChart();
+    generateMonthlyTrendChart();
+  });
+</script>
